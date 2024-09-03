@@ -6,7 +6,6 @@ const nodeEnvConfig = require("../nodeEnvConfig");
 nodeEnvConfig.envConfig();
 let datetime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
 const { v4: uuidv4 } = require("uuid");
-const mysqlConnections = require("../config/mySqlconnetions");
 const mysql = require("mysql");
 
 /**
@@ -103,7 +102,7 @@ const addBudgetDataService = async (data) => {
 
      )
         `;
-    mysqlConnections.query(query, (err, result) => {
+    mysqlConnection.query(query, (err, result) => {
       if (err) {
         return reject(new Error(`add budget query failed: ${err.message}`));
       }
@@ -137,7 +136,7 @@ const addBudgetDataService = async (data) => {
         // Push each promise to an array
         promises.push(
           new Promise((resolve, reject) => {
-            mysqlConnections.query(query, values, (err, result) => {
+            mysqlConnection.query(query, values, (err, result) => {
               if (err) {
                 return reject(
                   new Error(`Add budget query failed: ${err.message}`)
@@ -183,7 +182,7 @@ const viewBudgetDataService = async () => {
     const query = `
         SELECT * FROM budget_master LEFT JOIN budget_child ON budget_child.master_Id = budget_master.id ORDER BY budget_master.id ASC;
         `;
-    mysqlConnections.query(query, (err, result) => {
+    mysqlConnection.query(query, (err, result) => {
       if (err) {
         return reject(new Error(`update budget query failed: ${err.message}`));
       }

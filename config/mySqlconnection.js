@@ -4,10 +4,12 @@ const nodeEnvConfig = require("../nodeEnvConfig");
 nodeEnvConfig.envConfig();
 
 const mysqlConnection = mysql.createPool({
-  host: "localhost",
-  user: "admin",
-  password: "admin@123",
-  database: "bhub_preprod",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+
+  waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
   waitForConnections: true,
