@@ -14,7 +14,7 @@ function PageNotFound() {
         <p>
           Oops! It looks like you've stumbled upon a page that doesn't exist.
         </p>
-        <Link to={routePath?.root}>Back to Overall Projects</Link>
+        <Link to={routePath?.home}>Back to Overall Projects</Link>
         {/* <Link to={`${userIdToken ? "/dashboard" : "/"}`}>
                Go Back to {userIdToken === null ? "Login" : "Dashboard"}
             </Link> */}

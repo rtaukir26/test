@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, HashRouter } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import CommonOutlet from "../components/CommonOutlet/CommonOutlet";
 import routePath from "./routePath";
@@ -28,7 +28,7 @@ const AppRoutes = () => {
     }
   }, []);
   return (
-    <Router>
+    <HashRouter>
       <Routes>
         <Route path="*" element={<PageNotFound />}></Route>
         <Route path={routePath.auth} element={<Authentication />} />
@@ -48,7 +48,7 @@ const AppRoutes = () => {
           <Route path={routePath.contact} element={<Contact />} />
         </Route>
       </Routes>
-    </Router>
+    </HashRouter>
   );
 };
 
