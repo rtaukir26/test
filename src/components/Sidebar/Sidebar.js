@@ -1,12 +1,14 @@
 import UserIcon from "../../assets/images/user.png";
-// import overAllProjectIcon from "../../Assets/images/Overall Projects.png";
+import overAllProjectIcon from "../../assets/images/Overall Projects.png";
 // import draft from "../../Assets/images/draft.png";
 // import newProjectIcon from "../../Assets/images/planning.png";
 // import importDB from "../../Assets/images/database.png";
 // import Users from "../../Assets/images/users.png";
 import helpIcon from "../../assets/images/help.png";
 // import CustomerImg from "../../Assets/images/customer.png";
-// import InhouseImg from "../../Assets/images/inhouse.png";
+import InhouseImg from "../../assets/images/inhouse.png";
+import { NavLink } from "react-router-dom";
+import routePath from "../../routes/routePath";
 // import { NavLink, useLocation } from "react-router-dom";
 // import { mainRoutePaths } from "../../Routes/RoutePaths";
 // import { decodeUser } from "../../constants/decryptToken.js";
@@ -46,7 +48,18 @@ const Sidebar = () => {
             <span>Customer Projects</span>
           </div>
         </NavLink> */}
-
+        <NavLink to={routePath.home}>
+          <div className="project-con">
+            <img src={overAllProjectIcon} alt="project" />
+            <span>Add</span>
+          </div>
+        </NavLink>
+        <NavLink to={routePath.budgetView}>
+          <div className="project-con">
+            <img src={InhouseImg} alt="project" />
+            <span>View</span>
+          </div>
+        </NavLink>
         <div className="project-con">
           <img src={helpIcon} alt="project" />
           <span>System User Guide</span>

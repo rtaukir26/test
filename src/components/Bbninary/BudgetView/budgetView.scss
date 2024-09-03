@@ -5,15 +5,20 @@
   padding: 10px;
   .budget-view-body {
   }
-}
-
-.budget-view {
-  a {
-    text-decoration: none;
-    color: $main-white;
-    background: #1f79a3;
-    padding: 6px 10px;
-    border-radius: 10px;
-    width: 140px;
+  .budget-view {
+    .custom-table {
+      color: $main-white;
+    }
   }
 }
+
+// .budget-view {
+//   a {
+//     text-decoration: none;
+//     color: $main-white;
+//     background: #1f79a3;
+//     padding: 6px 10px;
+//     border-radius: 10px;
+//     width: 140px;
+//   }
+// }
