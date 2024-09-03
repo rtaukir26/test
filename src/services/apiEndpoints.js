@@ -1,4 +1,4 @@
-export const Base_url = process.env.REACT_APP_API_END_POINT;
+export const Base_url = process.env.REACT_APP_API_BASE_URL;
 
 export const apiEndpoints = {
   departmentFilter: `${Base_url}/budget-app/department-filter`,
