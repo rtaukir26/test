@@ -309,8 +309,7 @@ const BbForm = () => {
     budgetDataApi,
     months,
     monthMap,
-    "R",
-    setBudgetDataApi
+    "R"
   );
 
   return (
