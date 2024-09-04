@@ -22,6 +22,7 @@ function Authentication() {
     axios
       .get(sectionUrl, header)
       .then((response) => {
+        console.log("response",response)
         if (response.status === 200) {
           if (response?.data?.pmtToolAccess) {
             console.log("token", params?.id);

@@ -5,12 +5,12 @@ import { getUserIdToken } from "../services/auth";
 
 const PrivateRoutes = ({ children }) => {
   const Navigate = useNavigate();
-  // const userToken = getUserIdToken();
+  const userToken = getUserIdToken();
   // console.log("userToken", userToken);
   // if (userToken === null) {
   //   <Navigate to={routePath.unAuthorized} />;
   // }
-  let userToken = true;
+  // let userToken = true;
   useEffect(() => {
     if (userToken === null) {
       return Navigate("/unauthorized");

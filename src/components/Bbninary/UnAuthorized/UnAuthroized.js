@@ -3,7 +3,7 @@ import UnAuthorized from "../../../assets/images/un_authroized.png";
 
 let interval;
 function UnAuthroized() {
-  let [seconds, setSeconds] = useState(5);
+  let [seconds, setSeconds] = useState(45);
 
   useEffect(() => {
     interval = setInterval(() => {

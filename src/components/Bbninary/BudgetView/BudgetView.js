@@ -121,7 +121,9 @@ const BudgetView = () => {
                   <td title={item.cost_center}>{item.cost_center}</td>
                   <td title={item.project_name}>{item.project_name}</td>
                   <td title={item.customer_type}>{item.customer_type}</td>
-                  <td title={item.customer}>{item.customer}</td>
+                  <td title={item.customer} className="truncate">
+                    {item.customer}
+                  </td>
                   <td title={item.budget_type}>{item.budget_type}</td>
                   <td title={item.item_description}>{item.item_description}</td>
                   <td title={item.cost_center}>{item.cost_center}</td>
