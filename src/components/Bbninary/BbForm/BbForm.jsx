@@ -1,7 +1,12 @@
 import { Toast } from "bootstrap";
 import React, { useEffect, useState } from "react";
+import { MultiSelect } from "react-multi-select-component";
+import SelectSearch from "react-select-search";
+import "react-select-search/style.css";
 import { toast } from "react-toastify";
 import deleteIcon from "../../../assets/images/delete.png";
+import DropdownIcon from "../../../assets/images/down-arrow.png";
+
 import Modal from "react-modal";
 import {
   calculateRowTotal,
@@ -26,10 +31,24 @@ const BbForm = () => {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [customerName, setCustomerName] = useState("");
-  const [formErr, setFormErr] = useState([]);
+  const [formErr, setFormErr] = useState();
   const [budgetTotal, setBudgetTotal] = useState(0);
 
   const Region = ["APAC", "EU", "NA", "UK"];
+  const Region2 = [
+    { name: "APAC", value: "APAC" },
+    { name: "EU", value: "EU" },
+    { name: "NA", value: "NA" },
+    { name: "UK", value: "UK" },
+    { name: "AU", value: "AU" },
+  ];
+
+  const CurrencyOption = [
+    { name: "INR", value: "INR" },
+    { name: "USD", value: "USD" },
+    { name: "EUR", value: "EUR" },
+    { name: "GBP", value: "GBP" },
+  ];
   // const BusinessFunction = [
   //   "Admin & Operations",
   //   "Business Development",
@@ -87,7 +106,7 @@ const BbForm = () => {
       budget_type: "",
       item_description: "",
       cost_center: "",
-      currency: "",
+      // currency: "",
       entries: [
         { budgetMonth: "10", year: "24", estimatedBudget: "" },
         { budgetMonth: "11", year: "24", estimatedBudget: "" },
@@ -97,6 +116,7 @@ const BbForm = () => {
       month_2: "",
       month_3: "",
       budget_total: "",
+      remarks: "",
     },
   ]);
 
@@ -107,6 +127,7 @@ const BbForm = () => {
     project_name: "",
     practice_name: "",
     customer: "",
+    currency: "",
     customer_type: "",
     financial_year: "2024-2025",
     f_quarter: "3",
@@ -124,20 +145,34 @@ const BbForm = () => {
     getDepartmentData()
       .then((res) => {
         if (res.status === 200 && res.data) {
-          setBusinessFunction(res.data.department);
+          let deptDetails = res.data?.department?.map(function (obj, i) {
+            obj["label"] = obj["unitname"];
+            obj["name"] = obj["unitname"];
+            obj["value"] = obj["unitname"];
+            return obj;
+          });
+          setBusinessFunction(deptDetails);
+          // setBusinessFunction(res.data.department);
         }
       })
       .catch((err) => err);
     getCustomerData()
       .then((res) => {
         if (res.status === 200 && res.data) {
-          setCustomerApiData(res.data.customer);
+          // setCustomerApiData(res.data.customer);
+          let cusDetails = res.data?.customer?.map(function (obj, i) {
+            obj["label"] = obj["client_name"];
+            obj["name"] = obj["client_name"];
+            obj["value"] = obj["client_name"];
+            return obj;
+          });
+          setCustomerApiData(cusDetails);
         }
       })
       .catch((err) => err);
   }, []);
 
-  // filterPractice api data
+  // filter Practice api data
   useEffect(() => {
     let fdata = BusinessFunction?.filter(
       (item) => item.id === businessName[0]?.id
@@ -145,22 +180,24 @@ const BbForm = () => {
     getPracticeData(fdata[0]?.id)
       .then((res) => {
         if (res.status === 200 && res.data) {
-          setPracticeApiData(res.data.practice);
+          // setPracticeApiData(res.data.practice);
+          let practiceDetails = res.data?.practice?.map(function (obj, i) {
+            obj["label"] = obj["deptname"];
+            obj["name"] = obj["deptname"];
+            obj["value"] = obj["deptname"];
+            return obj;
+          });
+          setPracticeApiData(practiceDetails);
         }
       })
       .catch((err) => err);
   }, [formValues.business_function]);
-  // useEffect(() => {
-  //   if (formValues.region) {
-  //     delete formErr.region;
-  //     setFormErr(formErr);
-  //   }
-  // }, [formValues, formErr]);
+
   console.log("formValues", formValues);
   console.log("budgetDataApi", budgetDataApi);
   console.log("BusinessFunction", BusinessFunction);
   console.log("practiceNameApi", practiceNameApi);
-  console.log("customerName", customerName);
+  console.log("customerNameApi", customerNameApi);
 
   // Handler for select box changes
   const handleChange = (e) => {
@@ -185,7 +222,7 @@ const BbForm = () => {
       budget_type: "",
       item_description: "",
       cost_center: "",
-      currency: "",
+      // currency: "",
       entries: [
         { budgetMonth: "10", year: "24", estimatedBudget: "" },
         { budgetMonth: "11", year: "24", estimatedBudget: "" },
@@ -199,30 +236,28 @@ const BbForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setIsSubmit(true);
-    console.log("Form Values:", formValues);
     // const validated = formValidation(formValues);
+    // console.log("validated", validated);
     // if (Object.keys(validated)?.length > 0) {
-    //   setFormErr(validated);
+    //   formErr(validated);
     //   // toast.dismiss();
-    //   // let msg = "Please fill all the mandatory fields.";
+    //   let msg = "Please fill all the mandatory fields.";
     //   // if (Object.keys(validated)?.length < 2) {
     //   //   let fieldMsg = Object?.values(validated)
     //   //     .map((item) => item)
     //   //     .toString();
+    //   //   // msg = `Please enter the ${fieldName?.split("_").join(" ")} field.`;
     //   //   msg = fieldMsg;
     //   // }
-    //   // toast.error(msg);
+    //   toast.error(msg);
     // } else {
     // }
-    // toast.success("Form has been submitted successfully");
-    // console.log("validated", validated);
-
-    // You can add logic to handle form submission here
+    setIsSubmit(true);
   };
+
   //popup OK button
   const handleConfirmSubmit = () => {
-    let updateTotal=budgetDataApi.map((item) => {
+    let updateTotal = budgetDataApi.map((item) => {
       return { ...item, budget_total: parseFloat(budgetTotal) };
     });
     setBudgetDataApi(updateTotal);
@@ -311,22 +346,31 @@ const BbForm = () => {
   };
 
   let totals = calculateTotals(budgetDataApi, months, monthMap, "R");
+
+  // calc total entered budget
   useEffect(() => {
     let bdgtTotal = totals
       .reduce((acc, curr) => acc + curr.value, 0)
       .toFixed(2);
     setBudgetTotal(bdgtTotal);
-    // const updateTotal = budgetDataApi.map((item) => {
-    //   return { ...item, budget_total: parseFloat(budgetTotal) };
-    // });
-    // setBudgetDataApi(updateTotal);
   }, [totals]);
+
+  //Validation field
+  // useEffect(() => {
+  //   let errorMsg = { ...formErr };
+
+  //   if (formValues.region !== "" && formValues.region !== undefined) {
+  //     delete errorMsg.region;
+  //   }
+  //   setFormErr(errorMsg);
+  // }, [formValues.region]);
+
   return (
     <div className="bb-main-con">
       <div className="bb-main-body">
         <ConfirmPopup
           headerTitle="Budget planner"
-          title="Are your sure, want to submit ?"
+          title="Are your sure you want to submit ?"
           isModalOpen={isSubmit}
           handleCancel={setIsSubmit}
           handleSubmitConfirm={handleConfirmSubmit}
@@ -334,7 +378,7 @@ const BbForm = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-div">
             {/* Region --1 */}
-            <div className="field-con">
+            {/* <div className="field-con">
               <label htmlFor="region">Region</label>
               <select
                 name="region"
@@ -349,10 +393,34 @@ const BbForm = () => {
                   </option>
                 ))}
               </select>
+            </div> */}
+            <div
+              className={`field-con form-col-sec select-search-container-section ${
+                // errMsg?.projectType && "search-error-field"
+                formErr?.region && "field-error"
+              }`}
+              // className="field-con form-col-sec select-search-container-section"
+            >
+              <label className="required">Region</label>
+              <SelectSearch
+                options={Region2}
+                value={formValues.region}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    region: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Project Type"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
             </div>
 
-            {/* BusinessFunction --2 */}
-            <div className="field-con">
+            {/* Department/BusinessFunction --2 */}
+            {/* <div className="field-con">
               <label htmlFor="business_function">Department</label>
               <select
                 name="business_function"
@@ -366,10 +434,32 @@ const BbForm = () => {
                   </option>
                 ))}
               </select>
+            </div> */}
+            <div className="field-con form-col-sec select-search-container-section">
+              <label className="required">Department</label>
+              <SelectSearch
+                options={BusinessFunction}
+                value={formValues.business_function}
+                onChange={(value) => {
+                  let d = BusinessFunction.filter(
+                    (item) => item.unitname === value
+                  );
+                  setBusinessName(d);
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    business_function: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Project Type"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
             </div>
 
             {/* Practice Name  --3 */}
-            <div className="field-con">
+            {/* <div className="field-con">
               <label htmlFor="practice_name">Practice Name</label>
               <select
                 name="practice_name"
@@ -383,7 +473,27 @@ const BbForm = () => {
                   </option>
                 ))}
               </select>
+            </div> */}
+
+            <div className="field-con form-col-sec select-search-container-section">
+              <label className="required">Practice Name</label>
+              <SelectSearch
+                options={practiceNameApi}
+                value={formValues.practice_name}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    practice_name: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Project Type"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
             </div>
+
             {/* Cost Center Owner  --4 */}
             <div className="field-con">
               <label htmlFor="cost_center">Cost Center Owner</label>
@@ -408,7 +518,7 @@ const BbForm = () => {
             </div>
 
             {/* Customer Type --6 */}
-            <div className="field-con">
+            {/* <div className="field-con">
               <label htmlFor="customer_type">Customer Type</label>
               <select
                 name="customer_type"
@@ -422,9 +532,28 @@ const BbForm = () => {
                   </option>
                 ))}
               </select>
+            </div> */}
+
+            <div className="field-con form-col-sec select-search-container-section">
+              <label className="required">Customer Type </label>
+              <SelectSearch
+                options={CustomerType}
+                value={formValues.customer_type}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    customer_type: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Project Type"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
             </div>
             {/* Customer --7 */}
-            <div className="field-con">
+            {/* <div className="field-con">
               <label htmlFor="customer">Customer</label>
               {isAddingNew ? (
                 <input
@@ -476,6 +605,44 @@ const BbForm = () => {
                   <option value="Add New +">Add New +</option>
                 </select>
               )}
+            </div> */}
+
+            <div className="field-con form-col-sec select-search-container-section">
+              <label className="required">Customer </label>
+              <SelectSearch
+                options={customerNameApi}
+                value={formValues.customer}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    customer: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Project Type"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
+            </div>
+            {/* Currency */}
+            <div className="field-con form-col-sec select-search-container-section">
+              <label className="required">Currency </label>
+              <SelectSearch
+                options={CurrencyOption}
+                value={formValues.currency}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    currency: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Project Type"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
             </div>
 
             {/* child component */}
@@ -501,15 +668,14 @@ const BbForm = () => {
                           <th>Budget Type</th>
                           <th>Item Description</th>
                           <th>Cost Center</th>
-                          <th>Currency</th>
+                          {/* <th>Currency</th> */}
                           {/* Months - header th */}
                           {months.map((month) => (
                             <th>{month}</th>
                           ))}
-                          {/* <th>Oct-24</th>
-                          <th>Nov-24</th>
-                          <th>Dec-24</th> */}
+
                           <th>Total</th>
+                          <th>Remarks</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -575,7 +741,7 @@ const BbForm = () => {
                               </div>
                             </td>
                             {/* Currency */}
-                            <td>
+                            {/* <td>
                               <div>
                                 <select
                                   name="currency"
@@ -593,7 +759,7 @@ const BbForm = () => {
                                   <option value="EUR">GBP</option>
                                 </select>
                               </div>
-                            </td>
+                            </td> */}
 
                             {/* Months */}
                             {months.map((monthValue, idx) => (
@@ -625,6 +791,23 @@ const BbForm = () => {
                                     "estimateBudget"
                                   )}
                                   readOnly
+                                />
+                              </div>
+                            </td>
+
+                            {/* Remarks */}
+                            <td>
+                              <div className="">
+                                <input
+                                  type="text"
+                                  name="remarks"
+                                  value={row.remarks}
+                                  onChange={(e) => {
+                                    const newRows = [...budgetDataApi];
+                                    newRows[rowIndex].remarks = e.target.value;
+
+                                    setBudgetDataApi(newRows);
+                                  }}
                                 />
                               </div>
                             </td>
@@ -671,6 +854,7 @@ const BbForm = () => {
                               .reduce((acc, curr) => acc + curr.value, 0)
                               .toFixed(2)}
                           </td>
+                          <td></td>
                         </tr>
                       </tbody>
                     </table>

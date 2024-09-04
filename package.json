@@ -1,5 +1,5 @@
 {
-  "name": "tyreplex",
+  "name": "budgetplanner",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
@@ -14,9 +14,11 @@
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",
     "react-modal": "^3.16.1",
+    "react-multi-select-component": "^4.3.4",
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.26.1",
     "react-scripts": "5.0.1",
+    "react-select-search": "^4.1.7",
     "react-toastify": "^10.0.5",
     "sass": "^1.75.0",
     "web-vitals": "^2.1.4"
