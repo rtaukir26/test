@@ -4,11 +4,14 @@ import { Loader } from "../../../utils/Images";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import routePath from "../../../routes/routePath";
+import { USER_ID_TOKEN_BUDGET } from "../../../constant/auth";
 
 function Authentication() {
   const params = useParams();
   const navigate = useNavigate();
-  const sectionUrl = process.env.REACT_APP_API_BASE_URL + "/pmt/get-session";
+  const sectionUrl =
+    process.env.REACT_APP_API_BASE_URL + "/budget-app/get-session";
+  console.log("params", params);
 
   const header = {
     headers: {
@@ -22,7 +25,8 @@ function Authentication() {
         if (response.status === 200) {
           if (response?.data?.pmtToolAccess) {
             console.log("token", params?.id);
-            localStorage.setItem("USER_ID_TOKEN_BUDGET", params?.id);
+            // localStorage.setItem("USER_ID_TOKEN_BUDGET", params?.id);
+            localStorage.setItem(USER_ID_TOKEN_BUDGET, params?.id);
             localStorage.setItem(
               "USER_ACCESS",
               response?.data?.currentUserAccess

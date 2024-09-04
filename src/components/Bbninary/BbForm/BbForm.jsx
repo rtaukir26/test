@@ -198,6 +198,7 @@ const BbForm = () => {
   console.log("BusinessFunction", BusinessFunction);
   console.log("practiceNameApi", practiceNameApi);
   console.log("customerNameApi", customerNameApi);
+  console.log("formErr", formErr);
 
   // Handler for select box changes
   const handleChange = (e) => {
@@ -236,23 +237,23 @@ const BbForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const validated = formValidation(formValues);
-    // console.log("validated", validated);
-    // if (Object.keys(validated)?.length > 0) {
-    //   formErr(validated);
-    //   // toast.dismiss();
-    //   let msg = "Please fill all the mandatory fields.";
-    //   // if (Object.keys(validated)?.length < 2) {
-    //   //   let fieldMsg = Object?.values(validated)
-    //   //     .map((item) => item)
-    //   //     .toString();
-    //   //   // msg = `Please enter the ${fieldName?.split("_").join(" ")} field.`;
-    //   //   msg = fieldMsg;
-    //   // }
-    //   toast.error(msg);
-    // } else {
-    // }
-    setIsSubmit(true);
+    const validated = formValidation(formValues);
+    console.log("validated", validated);
+    if (Object.keys(validated)?.length > 0) {
+      setFormErr(validated);
+      //   // toast.dismiss();
+      // let msg = "Please fill all the mandatory fields.";
+      //   // if (Object.keys(validated)?.length < 2) {
+      //   //   let fieldMsg = Object?.values(validated)
+      //   //     .map((item) => item)
+      //   //     .toString();
+      //   //   // msg = `Please enter the ${fieldName?.split("_").join(" ")} field.`;
+      //   //   msg = fieldMsg;
+      //   // }
+      // toast.error(msg);
+    } else {
+      setIsSubmit(true);
+    }
   };
 
   //popup OK button
@@ -356,14 +357,47 @@ const BbForm = () => {
   }, [totals]);
 
   //Validation field
-  // useEffect(() => {
-  //   let errorMsg = { ...formErr };
+  useEffect(() => {
+    let errorMsg = { ...formErr };
 
-  //   if (formValues.region !== "" && formValues.region !== undefined) {
-  //     delete errorMsg.region;
-  //   }
-  //   setFormErr(errorMsg);
-  // }, [formValues.region]);
+    if (formValues.region !== "" && formValues.region !== undefined) {
+      delete errorMsg.region;
+    }
+    if (
+      formValues.business_function !== "" &&
+      formValues.business_function !== undefined
+    ) {
+      delete errorMsg.business_function;
+    }
+    if (
+      formValues.practice_name !== "" &&
+      formValues.practice_name !== undefined
+    ) {
+      delete errorMsg.practice_name;
+    }
+    if (formValues.cost_center !== "" && formValues.cost_center !== undefined) {
+      delete errorMsg.cost_center;
+    }
+    if (
+      formValues.project_name !== "" &&
+      formValues.project_name !== undefined
+    ) {
+      delete errorMsg.project_name;
+    }
+    if (
+      formValues.customer_type !== "" &&
+      formValues.customer_type !== undefined
+    ) {
+      delete errorMsg.customer_type;
+    }
+    if (formValues.customer !== "" && formValues.customer !== undefined) {
+      delete errorMsg.customer;
+    }
+    if (formValues.currency !== "" && formValues.currency !== undefined) {
+      delete errorMsg.currency;
+    }
+    setFormErr(errorMsg);
+  }, [formValues]);
 
   return (
     <div className="bb-main-con">
@@ -396,7 +430,6 @@ const BbForm = () => {
             </div> */}
             <div
               className={`field-con form-col-sec select-search-container-section ${
-                // errMsg?.projectType && "search-error-field"
                 formErr?.region && "field-error"
               }`}
               // className="field-con form-col-sec select-search-container-section"
@@ -435,7 +468,12 @@ const BbForm = () => {
                 ))}
               </select>
             </div> */}
-            <div className="field-con form-col-sec select-search-container-section">
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.business_function && "field-error"
+              }`}
+            >
               <label className="required">Department</label>
               <SelectSearch
                 options={BusinessFunction}
@@ -475,7 +513,12 @@ const BbForm = () => {
               </select>
             </div> */}
 
-            <div className="field-con form-col-sec select-search-container-section">
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.practice_name && "field-error"
+              }`}
+            >
               <label className="required">Practice Name</label>
               <SelectSearch
                 options={practiceNameApi}
@@ -498,6 +541,7 @@ const BbForm = () => {
             <div className="field-con">
               <label htmlFor="cost_center">Cost Center Owner</label>
               <input
+                className={formErr?.cost_center && "field-error"}
                 type="text"
                 name="cost_center"
                 value={formValues.cost_center}
@@ -509,6 +553,7 @@ const BbForm = () => {
             <div className="field-con">
               <label htmlFor="project_name">Project Name</label>
               <input
+                className={formErr?.project_name && "field-error"}
                 type="text"
                 name="project_name"
                 placeholder="Enter Project Name"
@@ -534,7 +579,12 @@ const BbForm = () => {
               </select>
             </div> */}
 
-            <div className="field-con form-col-sec select-search-container-section">
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.customer_type && "field-error"
+              }`}
+            >
               <label className="required">Customer Type </label>
               <SelectSearch
                 options={CustomerType}
@@ -607,7 +657,12 @@ const BbForm = () => {
               )}
             </div> */}
 
-            <div className="field-con form-col-sec select-search-container-section">
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.customer && "field-error"
+              }`}
+            >
               <label className="required">Customer </label>
               <SelectSearch
                 options={customerNameApi}
@@ -626,7 +681,12 @@ const BbForm = () => {
               <img src={DropdownIcon} alt="dropdown" />
             </div>
             {/* Currency */}
-            <div className="field-con form-col-sec select-search-container-section">
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.currency && "field-error"
+              }`}
+            >
               <label className="required">Currency </label>
               <SelectSearch
                 options={CurrencyOption}

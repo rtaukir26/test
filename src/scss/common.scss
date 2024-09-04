@@ -97,7 +97,24 @@ span {
 .select-search-container {
   width: 100%;
 }
-
+// .search-error-field {
+.field-error {
+  .select-search-input {
+    border: 1px solid tomato !important;
+  }
+}
+.truncate {
+  display: inline-block;
+  // width: 100px;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100px;
+}
 //scrollbar
 /* width */
 ::-webkit-scrollbar {

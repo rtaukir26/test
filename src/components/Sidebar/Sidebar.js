@@ -51,19 +51,25 @@ const Sidebar = () => {
         <NavLink to={routePath.home}>
           <div className="project-con">
             <img src={overAllProjectIcon} alt="project" />
-            <span>Add</span>
+            <span>Plan The Budget</span>
           </div>
         </NavLink>
         <NavLink to={routePath.budgetView}>
           <div className="project-con">
             <img src={InhouseImg} alt="project" />
-            <span>View</span>
+            <span>My Submitted Budget</span>
           </div>
         </NavLink>
-        <div className="project-con">
+        <NavLink to={routePath.allBudgetList}>
+          <div className="project-con">
+            <img src={InhouseImg} alt="project" />
+            <span>Reports</span>
+          </div>
+        </NavLink>
+        {/* <div className="project-con">
           <img src={helpIcon} alt="project" />
           <span>System User Guide</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
