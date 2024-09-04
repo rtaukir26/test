@@ -3,7 +3,13 @@ import { apiEndpoints } from "./apiEndpoints";
 import { getUserIdToken } from "./auth";
 
 export const getDepartmentData = async () => {
-  return await axios.get(apiEndpoints.departmentFilter);
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.departmentFilter, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
 };
 export const getPracticeData = async (id) => {
   //   return await axios.get(
