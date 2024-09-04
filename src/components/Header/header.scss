@@ -73,6 +73,11 @@
           font-weight: bold;
           font-size: 20px;
         }
+        .toolName {
+          width: 150px;
+          margin: 0px 10px;
+          filter: brightness(0) invert(1);
+        }
       }
       // .toggle-con {
       //   cursor: pointer;

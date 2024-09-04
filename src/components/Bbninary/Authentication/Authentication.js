@@ -11,31 +11,26 @@ function Authentication() {
   const navigate = useNavigate();
   const sectionUrl =
     process.env.REACT_APP_API_BASE_URL + "/budget-app/get-session";
-  console.log("params", params);
 
   const header = {
     headers: {
-      Authorization: "Bearer " + params?.id,
+      Authorization: params?.id,
     },
   };
   useEffect(() => {
+    console.log("sectionUrl", sectionUrl, header);
     axios
       .get(sectionUrl, header)
       .then((response) => {
-        console.log("response",response)
         if (response.status === 200) {
-          if (response?.data?.pmtToolAccess) {
-            console.log("token", params?.id);
-            // localStorage.setItem("USER_ID_TOKEN_BUDGET", params?.id);
-            localStorage.setItem(USER_ID_TOKEN_BUDGET, params?.id);
-            localStorage.setItem(
-              "USER_ACCESS",
-              response?.data?.currentUserAccess
-            );
-            navigate(routePath.root);
-          } else {
-            navigate(routePath?.unAuthorized);
-          }
+          localStorage.setItem(USER_ID_TOKEN_BUDGET, params?.id);
+          localStorage.setItem(
+            "USER_ACCESS",
+            response?.data?.currentUserAccess
+          );
+          navigate(routePath?.home);
+        } else {
+          navigate(routePath?.unAuthorized);
         }
       })
       .catch((err) => {
