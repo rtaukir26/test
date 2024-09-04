@@ -3,7 +3,13 @@ import { apiEndpoints } from "./apiEndpoints";
 import { getUserIdToken } from "./auth";
 
 export const getDepartmentData = async () => {
-  return await axios.get(apiEndpoints.departmentFilter);
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.departmentFilter, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
 };
 export const getPracticeData = async (id) => {
   //   return await axios.get(
@@ -20,8 +26,20 @@ export const getPracticeData = async (id) => {
   });
 };
 export const getCustomerData = async () => {
-  return await axios.get(apiEndpoints.customerFilter);
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.customerFilter, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
 };
 export const saveBudgetData = async (data) => {
-  return await axios.post(apiEndpoints.saveFilter, data);
+  let token = getUserIdToken();
+  return await axios.post(apiEndpoints.saveFilter, data, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
 };
