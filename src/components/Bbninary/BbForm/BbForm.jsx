@@ -445,7 +445,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Project Type"
+                placeholder="Select Region"
                 search={true}
                 // disabled={projectId && !access?.super_access}
               />
@@ -489,7 +489,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Project Type"
+                placeholder="Select Department"
                 search={true}
                 // disabled={projectId && !access?.super_access}
               />
@@ -530,7 +530,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Project Type"
+                placeholder="Select Practice Name"
                 search={true}
                 // disabled={projectId && !access?.super_access}
               />
@@ -546,6 +546,7 @@ const BbForm = () => {
                 name="cost_center"
                 value={formValues.cost_center}
                 onChange={handleChange}
+                placeholder="Enter cost center owner name"
               />
             </div>
 
@@ -556,7 +557,7 @@ const BbForm = () => {
                 className={formErr?.project_name && "field-error"}
                 type="text"
                 name="project_name"
-                placeholder="Enter Project Name"
+                placeholder="Enter project name"
                 value={formValues.project_name}
                 onChange={handleChange}
               />
@@ -596,7 +597,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Project Type"
+                placeholder="Select Customer Type"
                 search={true}
                 // disabled={projectId && !access?.super_access}
               />
@@ -674,7 +675,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Project Type"
+                placeholder="Select Customer"
                 search={true}
                 // disabled={projectId && !access?.super_access}
               />
@@ -698,7 +699,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Project Type"
+                placeholder="Select Currency"
                 search={true}
                 // disabled={projectId && !access?.super_access}
               />
