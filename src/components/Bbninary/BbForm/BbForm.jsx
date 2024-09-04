@@ -27,6 +27,7 @@ const BbForm = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [formErr, setFormErr] = useState([]);
+  const [budgetTotal, setBudgetTotal] = useState(0);
 
   const Region = ["APAC", "EU", "NA", "UK"];
   // const BusinessFunction = [
@@ -221,15 +222,19 @@ const BbForm = () => {
   };
   //popup OK button
   const handleConfirmSubmit = () => {
-    let postData = { ...formValues, child: budgetDataApi };
-    navigate(routePath.budgetView);
+    let updateTotal=budgetDataApi.map((item) => {
+      return { ...item, budget_total: parseFloat(budgetTotal) };
+    });
+    setBudgetDataApi(updateTotal);
+    let postData = { ...formValues, child: updateTotal };
+    // navigate(routePath.budgetView);
 
     saveBudgetData(postData)
       .then((res) => {
         if (res.status === 200) {
           console.log("res", res);
           toast.success("Form has been submitted successfully");
-          // navigate(routePath.budgetView)
+          navigate(routePath.budgetView);
         } else {
           toast.error("something went wrong");
         }
@@ -305,13 +310,17 @@ const BbForm = () => {
     setBudgetDataApi(newArray);
   };
 
-  const totals = calculateTotals(
-    budgetDataApi,
-    months,
-    monthMap,
-    "R"
-  );
-
+  let totals = calculateTotals(budgetDataApi, months, monthMap, "R");
+  useEffect(() => {
+    let bdgtTotal = totals
+      .reduce((acc, curr) => acc + curr.value, 0)
+      .toFixed(2);
+    setBudgetTotal(bdgtTotal);
+    // const updateTotal = budgetDataApi.map((item) => {
+    //   return { ...item, budget_total: parseFloat(budgetTotal) };
+    // });
+    // setBudgetDataApi(updateTotal);
+  }, [totals]);
   return (
     <div className="bb-main-con">
       <div className="bb-main-body">
@@ -507,7 +516,7 @@ const BbForm = () => {
 
                       <tbody>
                         {budgetDataApi.map((row, rowIndex) => (
-                          <tr>
+                          <tr key={rowIndex}>
                             {/* Budget Type */}
                             <td>
                               <div>
@@ -588,7 +597,7 @@ const BbForm = () => {
 
                             {/* Months */}
                             {months.map((monthValue, idx) => (
-                              <td>
+                              <td key={idx}>
                                 <div>
                                   <input
                                     type="text"

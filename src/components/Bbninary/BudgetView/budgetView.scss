@@ -6,8 +6,41 @@
   .budget-view-body {
   }
   .budget-view {
+    width: 100%;
+    overflow: auto;
     .custom-table {
       color: $main-white;
+      thead {
+        tr {
+          background: #7e55cfad;
+          border-radius: 5px;
+          th {
+            padding: 15px 5px;
+            border-right: 1px solid #8068d9;
+
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100px;
+          }
+        }
+      }
+      tbody {
+        & tr:nth-child(odd) {
+          background-color: #f9f9f934; /* Background color for odd rows */
+        }
+
+        & tr:nth-child(even) {
+          background-color: #50494934; /* Background color for even rows */
+        }
+        tr {
+          font-size: 14px;
+          td {
+            padding: 5px;
+            text-align: center;
+          }
+        }
+      }
     }
   }
 }
