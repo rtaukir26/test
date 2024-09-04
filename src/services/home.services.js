@@ -20,8 +20,20 @@ export const getPracticeData = async (id) => {
   });
 };
 export const getCustomerData = async () => {
-  return await axios.get(apiEndpoints.customerFilter);
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.customerFilter, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
 };
 export const saveBudgetData = async (data) => {
-  return await axios.post(apiEndpoints.saveFilter, data);
+  let token = getUserIdToken();
+  return await axios.post(apiEndpoints.saveFilter, data, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
 };
