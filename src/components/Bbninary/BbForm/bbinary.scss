@@ -171,6 +171,11 @@
             td {
               width: 13%;
             }
+            .month-td-div {
+              input {
+                text-align: end !important;
+              }
+            }
             td {
               padding-right: 5px;
             }
@@ -180,6 +185,7 @@
                 background: #dddce3;
                 color: $text-color;
                 font-weight: bold;
+                text-align: end;
               }
             }
             .total-month-tr {

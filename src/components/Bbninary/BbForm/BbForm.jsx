@@ -31,11 +31,8 @@ const BbForm = () => {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isChildError, setIsChildError] = useState(false);
-  const [customerName, setCustomerName] = useState("");
   const [formErr, setFormErr] = useState();
   const [budgetTotal, setBudgetTotal] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
-  const Region = ["APAC", "EU", "NA", "UK"];
   const Region2 = [
     { name: "APAC", value: "APAC" },
     { name: "EU", value: "EU" },
@@ -50,6 +47,8 @@ const BbForm = () => {
     { name: "EUR", value: "EUR" },
     { name: "GBP", value: "GBP" },
   ];
+
+  const currencyIcon = { INR: "" };
   // const BusinessFunction = [
   //   "Admin & Operations",
   //   "Business Development",
@@ -106,9 +105,9 @@ const BbForm = () => {
   const [budgetDataApi, setBudgetDataApi] = useState([
     {
       budget_type: "",
+      budget_total: 0,
       item_description: "",
       cost_center: "",
-      // currency: "",
       entries: [
         { budgetMonth: "10", year: "24", estimatedBudget: "" },
         { budgetMonth: "11", year: "24", estimatedBudget: "" },
@@ -117,7 +116,7 @@ const BbForm = () => {
       month_1: "",
       month_2: "",
       month_3: "",
-      budget_total: "",
+      // budget_total: "",
       remarks: "",
     },
   ]);
@@ -140,7 +139,6 @@ const BbForm = () => {
   const [customerNameApi, setCustomerApiData] = useState([]);
 
   const [businessName, setBusinessName] = useState([]);
-  // console.log("businessName", businessName);
 
   //Api Calls
   useEffect(() => {
@@ -282,11 +280,11 @@ const BbForm = () => {
 
   //popup OK button
   const handleConfirmSubmit = () => {
-    let updateTotal = budgetDataApi.map((item) => {
-      return { ...item, budget_total: parseFloat(budgetTotal) };
-    });
-    setBudgetDataApi(updateTotal);
-    let postData = { ...formValues, child: updateTotal };
+    // let updateTotal = budgetDataApi.map((item) => {
+    //   return { ...item, budget_total: parseFloat(budgetTotal) };
+    // });
+    // setBudgetDataApi(updateTotal);
+    let postData = { ...formValues, child: budgetDataApi };
     // navigate(routePath.budgetView);
 
     saveBudgetData(postData)
@@ -319,7 +317,6 @@ const BbForm = () => {
     }
     // Convert the input value to a number
     const newValue = parseFloat(e.target.value) || 0;
-
     // -----------------
     if (idx === 0) {
       newArray[rowIndex].month_1 = newValue;
@@ -330,6 +327,11 @@ const BbForm = () => {
     if (idx === 2) {
       newArray[rowIndex].month_3 = newValue;
     }
+    const total =
+      (parseFloat(newArray[rowIndex].month_1) || 0) +
+      (parseFloat(newArray[rowIndex].month_2) || 0) +
+      (parseFloat(newArray[rowIndex].month_3) || 0);
+    newArray[rowIndex].budget_total = total;
 
     // -----------------
 
@@ -399,15 +401,18 @@ const BbForm = () => {
     // ) {
     //   delete errorMsg.practice_name;
     // }
-    // if (formValues.cost_center_owner !== "" && formValues.cost_center_owner !== undefined) {
-    //   delete errorMsg.cost_center_owner;
-    // }
     if (
-      formValues.project_name !== "" &&
-      formValues.project_name !== undefined
+      formValues.cost_center_owner !== "" &&
+      formValues.cost_center_owner !== undefined
     ) {
-      delete errorMsg.project_name;
+      delete errorMsg.cost_center_owner;
     }
+    // if (
+    //   formValues.project_name !== "" &&
+    //   formValues.project_name !== undefined
+    // ) {
+    //   delete errorMsg.project_name;
+    // }
     // if (
     //   formValues.customer_type !== "" &&
     //   formValues.customer_type !== undefined
@@ -435,6 +440,23 @@ const BbForm = () => {
   //     : filteredOptions;
   // const handleClickAddNewCustomer = () => {
   //   setIsAddingNew(!isAddingNew);
+  // };
+
+  // const handleGetMonthVal = (row, monthValue, idx) => {
+  //   let month = monthValue.split("-")[0]; //"Jan-24",... ---> "Jan"
+  //   const monthNumber = monthMap[month]; //"01","02",..
+  //   let value = 0;
+  //   value = row.entries?.filter((item) => {
+  //     if (item?.budgetMonth === monthNumber?.toString()) {
+  //       return item;
+  //     }
+  //   });
+  //   let updateData = [...budgetDataApi];
+  //   // updateData[idx].budget_total = parseFloat(value[0]?.estimatedBudget);
+  //   // setBudgetDataApi(updateData);
+  //   console.log("updateData", updateData);
+
+  //   return value[0]?.estimatedBudget;
   // };
   return (
     <div className="bb-main-con">
@@ -479,7 +501,7 @@ const BbForm = () => {
               //   formErr?.business_function && "field-error"
               // }`}
             >
-              <label className="required">Department</label>
+              <label className="required">Business Function</label>
               <SelectSearch
                 options={BusinessFunction}
                 value={formValues.business_function}
@@ -494,7 +516,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Department"
+                placeholder="Select Business Function"
                 search={true}
               />
               <img src={DropdownIcon} alt="dropdown" />
@@ -507,7 +529,7 @@ const BbForm = () => {
               //   formErr?.practice_name && "field-error"
               // }`}
             >
-              <label className="required">Practice Name</label>
+              <label className="required">Department/Practice Name</label>
               <SelectSearch
                 options={practiceNameApi}
                 value={formValues.practice_name}
@@ -518,7 +540,7 @@ const BbForm = () => {
                   }));
                 }}
                 name="projectType"
-                placeholder="Select Practice Name"
+                placeholder="Select Department/Practice Name"
                 search={true}
               />
               <img src={DropdownIcon} alt="dropdown" />
@@ -526,7 +548,9 @@ const BbForm = () => {
 
             {/* Cost Center Owner  --4 */}
             <div className="field-con">
-              <label htmlFor="cost_center_owner">Cost Center Owner</label>
+              <label htmlFor="cost_center_owner">
+                Cost Center Owner<small className="mandatory-small">*</small>
+              </label>
               <input
                 className={formErr?.cost_center_owner && "field-error"}
                 type="text"
@@ -539,9 +563,7 @@ const BbForm = () => {
 
             {/* Project Name  --5 */}
             <div className="field-con">
-              <label htmlFor="project_name">
-                Project Name<small className="mandatory-small">*</small>
-              </label>
+              <label htmlFor="project_name">Project Name</label>
               <input
                 className={formErr?.project_name && "field-error"}
                 type="text"
@@ -720,6 +742,7 @@ const BbForm = () => {
                             <td>
                               <div>
                                 <select
+                                  style={{ padding: "12px" }}
                                   value={row.budget_type}
                                   onChange={(e) => {
                                     const newRows = [...budgetDataApi];
@@ -818,7 +841,7 @@ const BbForm = () => {
                             {/* Months */}
                             {months.map((monthValue, idx) => (
                               <td key={idx}>
-                                <div>
+                                <div className="month-td-div">
                                   <input
                                     type="text"
                                     value={getMonthValue(row, monthValue, idx)}
@@ -895,7 +918,7 @@ const BbForm = () => {
                         </tr>
                         {/* Planned Total */}
                         <tr className="total-month-tr">
-                          <td colSpan="4">
+                          <td colSpan="3">
                             <div className="total-month-div">
                               Total per month
                             </div>

@@ -25,7 +25,6 @@ const AllBudgetList = () => {
       .catch((err) => err);
     getReportListExport()
       .then((res) => {
-        
         if (res.status === 200 && res.data)
           setReportListExportData(res.data.tickets);
       })
@@ -34,7 +33,7 @@ const AllBudgetList = () => {
 
   //download data as exel
   const exportBudgetSheet = (e) => {
-    let Heading = [["SNo", "Region", "Department"]];
+    let Heading = [["Region", "Business Function"]];
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(reportListExportData);
     XLSX.utils.sheet_add_aoa(worksheet, Heading);
@@ -95,7 +94,9 @@ const AllBudgetList = () => {
                         {/* <span className="truncate">{item.business_function}</span> */}
                       </td>
                       <td title={item.practice_name}>{item.practice_name}</td>
-                      <td title={item.cost_center_owner}>{item.cost_center_owner}</td>
+                      <td title={item.cost_center_owner}>
+                        {item.cost_center_owner}
+                      </td>
                       <td title={item.project_name}>{item.project_name}</td>
                       <td title={item.customer_type} className="truncate">
                         {item.customer_type}
