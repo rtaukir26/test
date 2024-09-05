@@ -33,7 +33,7 @@ const BudgetView = () => {
 
   //download data as exel
   const exportBudgetSheet = (e) => {
-    let Heading = [["SNo", "Cost Centre Code", "Budget"]];
+    let Heading = [["SNo", "Region", "Department"]];
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(budgetListExportData);
     XLSX.utils.sheet_add_aoa(worksheet, Heading);

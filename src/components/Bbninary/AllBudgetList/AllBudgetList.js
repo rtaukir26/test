@@ -20,12 +20,13 @@ const AllBudgetList = () => {
   useEffect(() => {
     getReportList()
       .then((res) => {
-        if (res.status == 200 && res.data) setBudgetList(res.data.viewData);
+        if (res.status === 200 && res.data) setBudgetList(res.data.tickets);
       })
       .catch((err) => err);
     getReportListExport()
       .then((res) => {
-        if (res.status == 200 && res.data)
+        
+        if (res.status === 200 && res.data)
           setReportListExportData(res.data.tickets);
       })
       .catch((err) => err);
@@ -33,7 +34,7 @@ const AllBudgetList = () => {
 
   //download data as exel
   const exportBudgetSheet = (e) => {
-    let Heading = [["SNo", "Cost Centre Code", "Budget"]];
+    let Heading = [["SNo", "Region", "Department"]];
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(reportListExportData);
     XLSX.utils.sheet_add_aoa(worksheet, Heading);
