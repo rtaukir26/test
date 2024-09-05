@@ -42,7 +42,6 @@ const BbForm = () => {
     { name: "UK", value: "UK" },
     { name: "AU", value: "AU" },
     { name: "NA", value: "NA" },
-    { name: "Not Applicable", value: "Not Applicable" },
   ];
 
   const CurrencyOption = [

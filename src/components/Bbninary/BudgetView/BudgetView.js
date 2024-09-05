@@ -42,7 +42,7 @@ const BudgetView = () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(
       workbook,
-      "Cost-Centres-Budget-" +
+      "BB-Budget-Report-" +
         moment(new Date()).format("YYYY-MM-DD-HH-mm-ss") +
         ".xlsx"
     );
@@ -111,7 +111,7 @@ const BudgetView = () => {
                     <th>Region</th>
                     <th>Department</th>
                     <th>Practice Name</th>
-                    <th>Const Center Owner</th>
+                    <th>Cost Center Owner</th>
                     <th>Project Name</th>
                     <th>Customer Type</th>
                     <th>Customer</th>
