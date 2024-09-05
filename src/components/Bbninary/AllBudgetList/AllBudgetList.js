@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import routePath from "../../../routes/routePath";
-import { getBudgetList } from "../../../services/budgetViewServices";
+import { getBudgetList, getReportList } from "../../../services/budgetViewServices";
 import downloadIcon from "../../../assets/images/file.png";
+import noDataFoundIcon from "../../../assets/images/no-data-found.png";
+
 import * as XLSX from "xlsx";
 import moment from "moment";
 
@@ -11,7 +13,7 @@ const AllBudgetList = () => {
   console.log("budgetListApi", budgetListApi);
 
   useEffect(() => {
-    getBudgetList()
+    getReportList()
       .then((res) => {
         if (res.status == 200 && res.data) setBudgetList(res.data.viewData);
       })
@@ -37,7 +39,7 @@ const AllBudgetList = () => {
     <div className="budget-view-main">
       <div className="budget-view-body ">
         <div className="budget-view">
-          <div className="download-btn">
+        {budgetListApi?.length > 0 ? <>       <div className="download-btn">
             <button onClick={exportBudgetSheet}>
               <img
                 onClick={exportBudgetSheet}
@@ -63,7 +65,7 @@ const AllBudgetList = () => {
                 <th>Currency</th>
                 <th>Oct-24</th>
                 <th>Nov-24</th>
-                <th>Des-24</th>
+                <th>Dec-24</th>
                 <th>Total</th>
                 <th>Remarks</th>
               </tr>
@@ -79,7 +81,7 @@ const AllBudgetList = () => {
                   <td title={item.practice_name}>{item.practice_name}</td>
                   <td title={item.cost_center}>{item.cost_center}</td>
                   <td title={item.project_name}>{item.project_name}</td>
-                  <td title={item.customer_type}>{item.customer_type}</td>
+                  <td title={item.customer_type} className="truncate">{item.customer_type}</td>
                   <td title={item.customer} className="truncate">
                     {item.customer}
                   </td>
@@ -95,7 +97,11 @@ const AllBudgetList = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></>:  <div className="no-data-found">
+              <p>No Data Found</p>
+              <img src={noDataFoundIcon} alt="nodata" />
+            </div>}
+   
         </div>
       </div>
     </div>

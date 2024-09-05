@@ -30,17 +30,18 @@ const BbForm = () => {
   const navigate = useNavigate();
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isChildError, setIsChildError] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [formErr, setFormErr] = useState();
   const [budgetTotal, setBudgetTotal] = useState(0);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const Region = ["APAC", "EU", "NA", "UK"];
   const Region2 = [
     { name: "APAC", value: "APAC" },
     { name: "EU", value: "EU" },
-    { name: "NA", value: "NA" },
     { name: "UK", value: "UK" },
     { name: "AU", value: "AU" },
+    { name: "NA", value: "NA" },
   ];
 
   const CurrencyOption = [
@@ -48,6 +49,7 @@ const BbForm = () => {
     { name: "USD", value: "USD" },
     { name: "EUR", value: "EUR" },
     { name: "GBP", value: "GBP" },
+    { name: "NA", value: "NA" },
   ];
   // const BusinessFunction = [
   //   "Admin & Operations",
@@ -100,6 +102,7 @@ const BbForm = () => {
       value: "Technology Platform or Solution Providers",
     },
     { name: "Semiconductor Suppliers", value: "Semiconductor Suppliers" },
+    { name: "NA", value: "NA" },
   ];
   const [budgetDataApi, setBudgetDataApi] = useState([
     {
@@ -151,7 +154,7 @@ const BbForm = () => {
             obj["value"] = obj["unitname"];
             return obj;
           });
-          setBusinessFunction(deptDetails);
+          setBusinessFunction([...deptDetails, { name: "NA", value: "NA" }]);
           // setBusinessFunction(res.data.department);
         }
       })
@@ -166,7 +169,7 @@ const BbForm = () => {
             obj["value"] = obj["client_name"];
             return obj;
           });
-          setCustomerApiData(cusDetails);
+          setCustomerApiData([...cusDetails, { name: "NA", value: "NA" }]);
         }
       })
       .catch((err) => err);
@@ -187,7 +190,7 @@ const BbForm = () => {
             obj["value"] = obj["deptname"];
             return obj;
           });
-          setPracticeApiData(practiceDetails);
+          setPracticeApiData([...practiceDetails, { name: "NA", value: "NA" }]);
         }
       })
       .catch((err) => err);
@@ -236,13 +239,13 @@ const BbForm = () => {
   // Form submit handler - popup
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setIsChildError(true);
     const validated = formValidation(formValues);
     console.log("validated", validated);
     if (Object.keys(validated)?.length > 0) {
       setFormErr(validated);
       //   // toast.dismiss();
-      // let msg = "Please fill all the mandatory fields.";
+      let msg = "Please fill all the mandatory fields.";
       //   // if (Object.keys(validated)?.length < 2) {
       //   //   let fieldMsg = Object?.values(validated)
       //   //     .map((item) => item)
@@ -250,7 +253,7 @@ const BbForm = () => {
       //   //   // msg = `Please enter the ${fieldName?.split("_").join(" ")} field.`;
       //   //   msg = fieldMsg;
       //   // }
-      // toast.error(msg);
+      toast.error(msg);
     } else {
       setIsSubmit(true);
     }
@@ -399,6 +402,17 @@ const BbForm = () => {
     setFormErr(errorMsg);
   }, [formValues]);
 
+  // Filter options based on the search term
+  // const filteredOptions = customerNameApi.filter((option) =>
+  //   option.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  // // Add a custom message when no options are found
+  // const displayOptions =
+  //   filteredOptions.length === 0 && searchTerm
+  //     ? [{ name: "No Option Found", value: "" }]
+  //     : filteredOptions;
+
   return (
     <div className="bb-main-con">
       <div className="bb-main-body">
@@ -412,27 +426,11 @@ const BbForm = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-div">
             {/* Region --1 */}
-            {/* <div className="field-con">
-              <label htmlFor="region">Region</label>
-              <select
-                name="region"
-                value={formValues.region}
-                onChange={handleChange}
-                // className={formErr.region ? "field-error" : ""}
-              >
-                <option value="">Select Region</option>
-                {Region.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div> */}
             <div
-              className={`field-con form-col-sec select-search-container-section ${
-                formErr?.region && "field-error"
-              }`}
-              // className="field-con form-col-sec select-search-container-section"
+              // className={`field-con form-col-sec select-search-container-section ${
+              //   formErr?.region && "field-error"
+              // }`}
+              className="field-con form-col-sec select-search-container-section"
             >
               <label className="required">Region</label>
               <SelectSearch
@@ -447,32 +445,16 @@ const BbForm = () => {
                 name="projectType"
                 placeholder="Select Region"
                 search={true}
-                // disabled={projectId && !access?.super_access}
               />
               <img src={DropdownIcon} alt="dropdown" />
             </div>
 
             {/* Department/BusinessFunction --2 */}
-            {/* <div className="field-con">
-              <label htmlFor="business_function">Department</label>
-              <select
-                name="business_function"
-                value={formValues.business_function}
-                onChange={handleChange}
-              >
-                <option value="">Select Department</option>
-                {BusinessFunction?.map((option) => (
-                  <option key={option.unitname} value={option.unitname}>
-                    {option.unitname}
-                  </option>
-                ))}
-              </select>
-            </div> */}
             <div
-              // className="field-con form-col-sec select-search-container-section"
-              className={`field-con form-col-sec select-search-container-section ${
-                formErr?.business_function && "field-error"
-              }`}
+              className="field-con form-col-sec select-search-container-section"
+              // className={`field-con form-col-sec select-search-container-section ${
+              //   formErr?.business_function && "field-error"
+              // }`}
             >
               <label className="required">Department</label>
               <SelectSearch
@@ -491,33 +473,16 @@ const BbForm = () => {
                 name="projectType"
                 placeholder="Select Department"
                 search={true}
-                // disabled={projectId && !access?.super_access}
               />
               <img src={DropdownIcon} alt="dropdown" />
             </div>
 
             {/* Practice Name  --3 */}
-            {/* <div className="field-con">
-              <label htmlFor="practice_name">Practice Name</label>
-              <select
-                name="practice_name"
-                value={formValues.practice_name}
-                onChange={handleChange}
-              >
-                <option value="">Select Practice Name</option>
-                {practiceNameApi?.map((option) => (
-                  <option key={option.deptname} value={option.deptname}>
-                    {option.deptname}
-                  </option>
-                ))}
-              </select>
-            </div> */}
-
             <div
-              // className="field-con form-col-sec select-search-container-section"
-              className={`field-con form-col-sec select-search-container-section ${
-                formErr?.practice_name && "field-error"
-              }`}
+              className="field-con form-col-sec select-search-container-section"
+              // className={`field-con form-col-sec select-search-container-section ${
+              //   formErr?.practice_name && "field-error"
+              // }`}
             >
               <label className="required">Practice Name</label>
               <SelectSearch
@@ -532,7 +497,6 @@ const BbForm = () => {
                 name="projectType"
                 placeholder="Select Practice Name"
                 search={true}
-                // disabled={projectId && !access?.super_access}
               />
               <img src={DropdownIcon} alt="dropdown" />
             </div>
@@ -564,22 +528,6 @@ const BbForm = () => {
             </div>
 
             {/* Customer Type --6 */}
-            {/* <div className="field-con">
-              <label htmlFor="customer_type">Customer Type</label>
-              <select
-                name="customer_type"
-                value={formValues.customer_type}
-                onChange={handleChange}
-              >
-                <option value="">Select Customer Type</option>
-                {CustomerType.map((option) => (
-                  <option key={option.name} value={option.name}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
-
             <div
               // className="field-con form-col-sec select-search-container-section"
               className={`field-con form-col-sec select-search-container-section ${
@@ -599,67 +547,12 @@ const BbForm = () => {
                 name="projectType"
                 placeholder="Select Customer Type"
                 search={true}
-                // disabled={projectId && !access?.super_access}
               />
               <img src={DropdownIcon} alt="dropdown" />
             </div>
-            {/* Customer --7 */}
-            {/* <div className="field-con">
-              <label htmlFor="customer">Customer</label>
-              {isAddingNew ? (
-                <input
-                  type="text"
-                  name="customer"
-                  placeholder="Enter Customer Name"
-                  value={customerName}
-                  autoFocus
-                  // onChange={handleChange}
-                  onChange={(e) => {
-                    let { name, value } = e.target;
-                    setCustomerName(value);
-                    setFormValues((prevValues) => ({
-                      ...prevValues,
-                      [name]: value,
-                    }));
-                  }}
-                />
-              ) : (
-                <select
-                  name="customer"
-                  // value={formValues.Customer}
-                  value={customerName}
-                  onChange={(e) => {
-                    let { name, value } = e.target;
-                    console.log("value", value);
-                    if (value === "Add New +") {
-                      setIsAddingNew(true);
-                      setCustomerName("");
-                      setFormValues((prevValues) => ({
-                        ...prevValues,
-                        [name]: value,
-                      }));
-                    } else {
-                      setCustomerName(value);
-                      setFormValues((prevValues) => ({
-                        ...prevValues,
-                        [name]: value,
-                      }));
-                    }
-                  }}
-                >
-                  <option value="">Select Customer</option>
-                  {customerNameApi?.map((option) => (
-                    <option key={option.client_name} value={option.client_name}>
-                      {option.client_name}
-                    </option>
-                  ))}
-                  <option value="Add New +">Add New +</option>
-                </select>
-              )}
-            </div> */}
 
+            {/* Customer --7 */}
             <div
-              // className="field-con form-col-sec select-search-container-section"
               className={`field-con form-col-sec select-search-container-section ${
                 formErr?.customer && "field-error"
               }`}
@@ -677,13 +570,31 @@ const BbForm = () => {
                 name="projectType"
                 placeholder="Select Customer"
                 search={true}
-                // disabled={projectId && !access?.super_access}
+                // onSearch={(term) => {
+                //   setSearchTerm(term);
+                // }}
+                // renderOption={(option) => (
+                //   <div>
+                //     {option.value === "" ? (
+                //       <div
+                //         style={{
+                //           color: "red",
+                //           padding: "10px",
+                //           textAlign: "center",
+                //         }}
+                //       >
+                //         No Option Found
+                //       </div>
+                //     ) : (
+                //       <div>{option.name}</div>
+                //     )}
+                //   </div>
+                // )}
               />
               <img src={DropdownIcon} alt="dropdown" />
             </div>
             {/* Currency */}
             <div
-              // className="field-con form-col-sec select-search-container-section"
               className={`field-con form-col-sec select-search-container-section ${
                 formErr?.currency && "field-error"
               }`}
@@ -755,11 +666,19 @@ const BbForm = () => {
                                       e.target.value;
 
                                     setBudgetDataApi(newRows);
+                                    setIsChildError(false);
                                   }}
+                                  className={
+                                    !budgetDataApi[rowIndex]?.budget_type &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
                                 >
+                                  <option value="">Select Budget Type</option>
                                   <option value="Resources">Resources</option>
                                   <option value="Capex">Capex</option>
                                   <option value="Opex">Opex</option>
+                                  <option value="Travel">Travel</option>
                                   <option value="Pass Through">
                                     Pass Through
                                   </option>
@@ -773,6 +692,12 @@ const BbForm = () => {
                                 <input
                                   type="text"
                                   name="item_description"
+                                  className={
+                                    !budgetDataApi[rowIndex]
+                                      ?.item_description &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
                                   value={row.item_description}
                                   onChange={(e) => {
                                     const newRows = [...budgetDataApi];
@@ -780,6 +705,7 @@ const BbForm = () => {
                                       e.target.value;
 
                                     setBudgetDataApi(newRows);
+                                    setIsChildError(false);
                                   }}
                                 />
                               </div>
@@ -790,6 +716,11 @@ const BbForm = () => {
                                 <input
                                   type="text"
                                   name="cost_center"
+                                  className={
+                                    !budgetDataApi[rowIndex]?.cost_center &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
                                   value={row.cost_center}
                                   onChange={(e) => {
                                     const newRows = [...budgetDataApi];
@@ -797,6 +728,7 @@ const BbForm = () => {
                                       e.target.value;
 
                                     setBudgetDataApi(newRows);
+                                    setIsChildError(false);
                                   }}
                                 />
                               </div>

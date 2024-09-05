@@ -11,3 +11,12 @@ export const getBudgetList = async () => {
     },
   });
 };
+export const getReportList = async () => {
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.viewBudgetReport, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
+};

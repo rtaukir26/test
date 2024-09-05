@@ -8,6 +8,7 @@ import helpIcon from "../../assets/images/help.png";
 // import CustomerImg from "../../Assets/images/customer.png";
 import InhouseImg from "../../assets/images/reports.png";
 import submitImg from "../../assets/images/Submitted Budget.png";
+import budgetPlan from "../../assets/images/budgetPlan.png";
 import { NavLink } from "react-router-dom";
 import routePath from "../../routes/routePath";
 import { decodeUser } from "../../services/auth";
@@ -17,6 +18,13 @@ import { decodeUser } from "../../services/auth";
 // import jwtDecode from "jwt-decode";
 
 const Sidebar = () => {
+  const accessUser = [
+    "devanshi.jadav@yopmail.com",
+    "Venkatesh.Krishnan@bluebinaries.com",
+    "puttaiah.bellamkonda@bluebinaries.com",
+    "natesan.ramanathan@bluebinaries.com",
+    "pravin.s@bluebinaries.com",
+  ];
   let tokenDetails = decodeUser();
   console.log("tokenDetails", tokenDetails);
 
@@ -54,7 +62,7 @@ const Sidebar = () => {
         </NavLink> */}
         <NavLink to={routePath.home}>
           <div className="project-con">
-            <img src={overAllProjectIcon} alt="project" />
+            <img src={budgetPlan} alt="project" />
             <span>Plan The Budget</span>
           </div>
         </NavLink>
@@ -64,12 +72,14 @@ const Sidebar = () => {
             <span>My Submitted Budget</span>
           </div>
         </NavLink>
-        <NavLink to={routePath.allBudgetList}>
-          <div className="project-con">
-            <img src={InhouseImg} alt="project" />
-            <span>Reports</span>
-          </div>
-        </NavLink>
+        {accessUser.includes(tokenDetails.emailAddress) && (
+          <NavLink to={routePath.allBudgetList}>
+            <div className="project-con">
+              <img src={InhouseImg} alt="project" />
+              <span>Reports</span>
+            </div>
+          </NavLink>
+        )}
         {/* <div className="project-con">
           <img src={helpIcon} alt="project" />
           <span>System User Guide</span>

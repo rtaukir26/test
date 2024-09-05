@@ -218,6 +218,9 @@
             option {
               color: $text-color;
             }
+            &.field-error {
+              border: 1px solid tomato;
+            }
           }
         }
       }

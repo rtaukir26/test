@@ -131,7 +131,19 @@ span {
   white-space: nowrap;
   width: 100px;
 }
-
+.no-data-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 240px);
+  p {
+    color: #fff;
+    font-size: 22px;
+  }
+  img {
+    width: 500px;
+  }
+}
 //scrollbar
 /* width */
 ::-webkit-scrollbar {
