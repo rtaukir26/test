@@ -6,16 +6,28 @@ import overAllProjectIcon from "../../assets/images/Overall Projects.png";
 // import Users from "../../Assets/images/users.png";
 import helpIcon from "../../assets/images/help.png";
 // import CustomerImg from "../../Assets/images/customer.png";
-import InhouseImg from "../../assets/images/inhouse.png";
+import InhouseImg from "../../assets/images/reports.png";
+import submitImg from "../../assets/images/Submitted Budget.png";
+import budgetPlan from "../../assets/images/budgetPlan.png";
 import { NavLink } from "react-router-dom";
 import routePath from "../../routes/routePath";
+import { decodeUser } from "../../services/auth";
 // import { NavLink, useLocation } from "react-router-dom";
 // import { mainRoutePaths } from "../../Routes/RoutePaths";
 // import { decodeUser } from "../../constants/decryptToken.js";
 // import jwtDecode from "jwt-decode";
 
 const Sidebar = () => {
-  let tokenDetails = { userFullName: "Natesan G", roleName: "Manager" };
+  const accessUser = [
+    "devanshi.jadav@yopmail.com",
+    "Venkatesh.Krishnan@bluebinaries.com",
+    "puttaiah.bellamkonda@bluebinaries.com",
+    "natesan.ramanathan@bluebinaries.com",
+    "pravin.s@bluebinaries.com",
+  ];
+  let tokenDetails = decodeUser();
+  console.log("tokenDetails", tokenDetails);
+
   // let tokenDetails = decodeUser();
   // const location = useLocation();
   // const fromPage = location.state?.fromPage;
@@ -50,20 +62,28 @@ const Sidebar = () => {
         </NavLink> */}
         <NavLink to={routePath.home}>
           <div className="project-con">
-            <img src={overAllProjectIcon} alt="project" />
-            <span>Add</span>
+            <img src={budgetPlan} alt="project" />
+            <span>Plan The Budget</span>
           </div>
         </NavLink>
         <NavLink to={routePath.budgetView}>
           <div className="project-con">
-            <img src={InhouseImg} alt="project" />
-            <span>View</span>
+            <img src={submitImg} alt="project" />
+            <span>My Submitted Budget</span>
           </div>
         </NavLink>
-        <div className="project-con">
+        {accessUser.includes(tokenDetails.emailAddress) && (
+          <NavLink to={routePath.allBudgetList}>
+            <div className="project-con">
+              <img src={InhouseImg} alt="project" />
+              <span>Reports</span>
+            </div>
+          </NavLink>
+        )}
+        {/* <div className="project-con">
           <img src={helpIcon} alt="project" />
           <span>System User Guide</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

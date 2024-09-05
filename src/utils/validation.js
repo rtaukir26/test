@@ -2,28 +2,29 @@ export const formValidation = (data) => {
   let response = [];
 
   if (!data.region) {
-    response["region"] = "Please select the region";
+    response["region"] = "Please select region";
   }
-  if (!data.BusinessFunction) {
-    response["BusinessFunction"] = "Please select the department name";
+  if (!data.business_function) {
+    response["business_function"] = "Please select department name";
   }
-  if (!data.PracticeName) {
-    response["PracticeName"] = "Please select the practiceName";
+  if (!data.practice_name) {
+    response["practice_name"] = "Please select practice name";
   }
-  if (!data.ConstOwner) {
-    response["ConstOwner"] = "Please enter the const center owner";
+  if (!data.cost_center) {
+    response["cost_center"] = "Please enter const center owner";
   }
-  if (!data.ProjectName) {
-    response["ProjectName"] = "Please enter the project Name";
+  if (!data.project_name) {
+    response["project_name"] = "Please enter project name";
   }
-  // if (!data.state) {
-  //   response["state"] = "Please select the state";
-  // }
-  if (!data.CustomerType === "") {
-    response["CustomerType"] = "Please select the customer type";
+
+  if (!data.customer_type) {
+    response["customer_type"] = "Please select customer type";
   }
-  if (!data.Customer) {
-    response["Customer"] = "Please enter the customer name";
+  if (!data.customer) {
+    response["customer"] = "Please select customer name";
+  }
+  if (!data.currency) {
+    response["currency"] = "Please select currency name";
   }
 
   //   if (

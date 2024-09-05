@@ -18,6 +18,23 @@
       margin: 5px;
       width: 32%;
       color: $main-white;
+      position: relative;
+
+      // .form-col-sec {
+      img {
+        position: absolute;
+        top: 63%;
+        right: 10px;
+        width: 13px;
+        filter: brightness(0) invert(1);
+        transition: all 0.2s;
+      }
+      &:focus-within {
+        img {
+          transform: rotate(180deg);
+        }
+      }
+      // }
       select {
         width: 100%;
         // background-image: linear-gradient(45deg, #e4dbe9, #e3d4ff4f);
@@ -66,6 +83,11 @@
         }
       }
       .field-error {
+        border: 1px solid rgb(228, 26, 26);
+      }
+    }
+    .custom-select {
+      &.field-error {
         border: 1px solid rgb(228, 26, 26);
       }
     }
@@ -195,6 +217,9 @@
             margin-top: 8px;
             option {
               color: $text-color;
+            }
+            &.field-error {
+              border: 1px solid tomato;
             }
           }
         }
@@ -327,10 +352,10 @@
   background-color: #3e66b0;
   height: 40px;
   span {
-     color: #fff;
-     font-size: 13px;
-     margin: 10px;
-     float: left;
+    color: #fff;
+    font-size: 13px;
+    margin: 10px;
+    float: left;
   }
 }
 .modal-body {

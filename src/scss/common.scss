@@ -24,8 +24,24 @@
 //   }
 //   @return $pixels / $context * 1rem;
 // }
+@font-face {
+  font-family: "Facto";
+  src: url(../assets/Fonts/Facto.otf) format("opentype");
+}
+@font-face {
+  font-family: "Facto-bold";
+  src: url(../assets/Fonts/Facto_Bold.otf) format("opentype");
+}
+@font-face {
+  font-family: "Facto-italic";
+  src: url(../assets/Fonts/Facto_Thin_Italic.otf) format("opentype");
+}
+// @font-face {
+//   font-family: "Facto-extra-bold";
+//   src: url(../assets/Facto-extra-bold.otf) format("opentype");
+// }
 body {
-  font-family: "Facto", sans-serif;
+  font-family: "Facto" !important;
   letter-spacing: 0.5px;
   background: linear-gradient(
     315deg,
@@ -64,7 +80,7 @@ span {
   background: hsla(0, 0%, 100%, 0.22);
   -webkit-backdrop-filter: blur(0);
   backdrop-filter: blur(0);
-  width: calc(100% - 130px);
+  width: calc(100% - 230px);
   position: relative;
   border-radius: 30px;
   box-shadow: -30px -10px 40px rgba(0, 0, 0, 0.12);
@@ -94,10 +110,40 @@ span {
   }
 }
 
-
-
-
-
+.select-search-container {
+  width: 100%;
+}
+// .search-error-field {
+.field-error {
+  .select-search-input {
+    border: 1px solid tomato !important;
+  }
+}
+.truncate {
+  display: inline-block;
+  // width: 100px;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100px;
+}
+.no-data-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 240px);
+  p {
+    color: #fff;
+    font-size: 22px;
+  }
+  img {
+    width: 500px;
+  }
+}
 //scrollbar
 /* width */
 ::-webkit-scrollbar {

@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, HashRouter } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  HashRouter,
+} from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import CommonOutlet from "../components/CommonOutlet/CommonOutlet";
 import routePath from "./routePath";
@@ -10,6 +15,7 @@ import BudgetView from "../components/Bbninary/BudgetView/BudgetView";
 import Authentication from "../components/Bbninary/Authentication/Authentication";
 import UnAuthroized from "../components/Bbninary/UnAuthorized/UnAuthroized";
 import PageNotFound from "../components/Bbninary/PageNotFound/PageNotFound";
+import AllBudgetList from "../components/Bbninary/AllBudgetList/AllBudgetList";
 
 const AppRoutes = () => {
   useEffect(() => {
@@ -44,8 +50,9 @@ const AppRoutes = () => {
           <Route path={routePath.root} element={<Home />} />
           <Route path={routePath.home} element={<Home />} />
           <Route path={routePath.budgetView} element={<BudgetView />} />
-          <Route path={routePath.about} element={<About />} />
-          <Route path={routePath.contact} element={<Contact />} />
+          <Route path={routePath.allBudgetList} element={<AllBudgetList />} />
+          {/* <Route path={routePath.about} element={<About />} />
+          <Route path={routePath.contact} element={<Contact />} /> */}
         </Route>
       </Routes>
     </HashRouter>

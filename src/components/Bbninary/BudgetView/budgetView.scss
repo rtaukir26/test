@@ -3,11 +3,60 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   padding: 10px;
-  .budget-view-body {
-  }
+
   .budget-view {
+    width: 100%;
+    overflow: auto;
+    .download-btn {
+      display: flex;
+      justify-content: start;
+      margin-bottom: 10px;
+      padding-right: 20px;
+      img {
+        width: 24px;
+        margin-right: 6px;
+      }
+      button {
+        background: linear-gradient(45deg, #e6e6ff, #b3d8e9);
+        padding: 5px 10px;
+        width: 150px;
+        border-radius: 100px;
+        border: none;
+      }
+    }
     .custom-table {
       color: $main-white;
+      thead {
+        tr {
+          background: #7e55cfad;
+          border-radius: 5px;
+          th {
+            padding: 15px 5px;
+            border-right: 1px solid #8068d9;
+
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100px;
+          }
+        }
+      }
+      tbody {
+        & tr:nth-child(odd) {
+          background-color: #f9f9f934; /* Background color for odd rows */
+        }
+
+        & tr:nth-child(even) {
+          background-color: #50494934; /* Background color for even rows */
+        }
+        tr {
+          font-size: 14px;
+          td {
+            padding: 15px 0px;
+            text-align: center;
+          }
+        }
+      }
     }
   }
 }

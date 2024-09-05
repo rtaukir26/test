@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import routePath from "./routePath";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getUserIdToken } from "../services/auth";
 
 const PrivateRoutes = ({ children }) => {
-  let userToken = true;
-  if (userToken === null) {
-    <Navigate to={routePath.login} />;
-  }
-
+  const Navigate = useNavigate();
+  const userToken = getUserIdToken();
+   console.log("userToken",userToken)
+  useEffect(() => {
+    if (userToken === null) {
+      return Navigate("/unauthorized");
+    }
+  }, []);
   return children;
 };
 

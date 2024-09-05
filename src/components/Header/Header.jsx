@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import brandLogo from "../../assets/images/brandLogo.png";
+import toolName from "../../assets/images/BudgetPlannerLogo.png";
 import user from "../../assets/images/user.png";
 import { Link } from "react-router-dom";
 import bell from "../../assets/images/notification.png";
@@ -36,7 +37,8 @@ const Header = () => {
 
           <div className="right">
             <div className="project-container">
-              <span>Budget Planner</span>
+              {/* <span>Budget Planner</span> */}
+              <img className="toolName" src={toolName} alt="tool" />
             </div>
 
             {/* <div className="toggle-con" onClick={handleClickToggle}>
