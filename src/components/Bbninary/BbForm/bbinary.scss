@@ -176,7 +176,7 @@
             }
             .total-row-cal {
               input {
-                border: 1px solid $main-white;
+                // border: 1px solid $main-white;
                 background: #dddce3;
                 color: $text-color;
                 font-weight: bold;
@@ -273,41 +273,10 @@
     }
   }
 }
-// .react-modal-user-enter-data {
-//   width: 400px;
-//   padding: 10px;
-//   display: grid;
-//   place-items: center;
-//   p {
-//     color: #020202;
-//     font-weight: bold;
-//     margin-bottom: 20px;
-//     font-size: 18px;
-//   }
-//   input {
-//     border: none;
-//     padding: 10px;
-//     border-radius: 5px;
-//     font-size: 15px;
-//     letter-spacing: 1px;
-//   }
-//   .btn-grp {
-//     margin-top: 10px;
-//     text-align: center;
-//     button {
-//       cursor: pointer;
-//       background: #405aa4;
-//       border: none;
-//       padding: 10px;
-//       border-radius: 5px;
-//       color: #fff;
-//       margin-right: 10px;
-//       &.btn-cancel {
-//         background: #dd3232;
-//       }
-//     }
-//   }
-// }
+.mandatory-small {
+  color: tomato;
+  font-size: 20px;
+}
 
 /*==============react-modal==================*/
 

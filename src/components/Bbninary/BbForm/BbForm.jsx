@@ -126,7 +126,7 @@ const BbForm = () => {
   const [formValues, setFormValues] = useState({
     region: "",
     business_function: "",
-    cost_center: "",
+    cost_center_owner: "",
     project_name: "",
     practice_name: "",
     customer: "",
@@ -250,8 +250,21 @@ const BbForm = () => {
     e.preventDefault();
     setIsChildError(true);
     const validated = formValidation(formValues);
-    console.log("validated", validated);
-    if (Object.keys(validated)?.length > 0) {
+    let isChildDataFilled = budgetDataApi.some((item) => {
+      let isValid = true;
+      if (!item.budget_type) {
+        isValid = false;
+      }
+      if (!item.item_description) {
+        isValid = false;
+      }
+      if (!item.cost_center) {
+        isValid = false;
+      }
+      return isValid;
+    });
+    console.log("validated", validated, isChildDataFilled);
+    if (Object.keys(validated)?.length > 0 || !isChildDataFilled) {
       setFormErr(validated);
       //   // toast.dismiss();
       let msg = "Please fill all the mandatory fields.";
@@ -387,9 +400,9 @@ const BbForm = () => {
     // ) {
     //   delete errorMsg.practice_name;
     // }
-    if (formValues.cost_center !== "" && formValues.cost_center !== undefined) {
-      delete errorMsg.cost_center;
-    }
+    // if (formValues.cost_center_owner !== "" && formValues.cost_center_owner !== undefined) {
+    //   delete errorMsg.cost_center_owner;
+    // }
     if (
       formValues.project_name !== "" &&
       formValues.project_name !== undefined
@@ -514,12 +527,12 @@ const BbForm = () => {
 
             {/* Cost Center Owner  --4 */}
             <div className="field-con">
-              <label htmlFor="cost_center">Cost Center Owner</label>
+              <label htmlFor="cost_center_owner">Cost Center Owner</label>
               <input
-                className={formErr?.cost_center && "field-error"}
+                className={formErr?.cost_center_owner && "field-error"}
                 type="text"
-                name="cost_center"
-                value={formValues.cost_center}
+                name="cost_center_owner"
+                value={formValues.cost_center_owner}
                 onChange={handleChange}
                 placeholder="Enter cost center owner name"
               />
@@ -527,7 +540,9 @@ const BbForm = () => {
 
             {/* Project Name  --5 */}
             <div className="field-con">
-              <label htmlFor="project_name">Project Name</label>
+              <label htmlFor="project_name">
+                Project Name<small className="mandatory-small">*</small>
+              </label>
               <input
                 className={formErr?.project_name && "field-error"}
                 type="text"
@@ -635,7 +650,9 @@ const BbForm = () => {
                 formErr?.currency && "field-error"
               }`}
             >
-              <label className="required">Currency </label>
+              <label className="required">
+                Currency<small className="mandatory-small">*</small>
+              </label>
               <SelectSearch
                 options={CurrencyOption}
                 value={formValues.currency}
@@ -673,9 +690,18 @@ const BbForm = () => {
                           </th>
                         </tr>
                         <tr>
-                          <th>Budget Type</th>
-                          <th>Item Description</th>
-                          <th>Cost Center</th>
+                          <th>
+                            Budget Type
+                            <small className="mandatory-small">*</small>
+                          </th>
+                          <th>
+                            Item Description
+                            <small className="mandatory-small">*</small>
+                          </th>
+                          <th>
+                            Cost Center
+                            <small className="mandatory-small">*</small>
+                          </th>
                           {/* <th>Currency</th> */}
                           {/* Months - header th */}
                           {months.map((month) => (
@@ -746,7 +772,7 @@ const BbForm = () => {
                                 />
                               </div>
                             </td>
-                            {/* Cost Center Owner */}
+                            {/* Cost Center */}
                             <td>
                               <div>
                                 <input

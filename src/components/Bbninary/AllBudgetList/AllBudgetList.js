@@ -95,7 +95,7 @@ const AllBudgetList = () => {
                         {/* <span className="truncate">{item.business_function}</span> */}
                       </td>
                       <td title={item.practice_name}>{item.practice_name}</td>
-                      <td title={item.cost_center}>{item.cost_center}</td>
+                      <td title={item.cost_center_owner}>{item.cost_center_owner}</td>
                       <td title={item.project_name}>{item.project_name}</td>
                       <td title={item.customer_type} className="truncate">
                         {item.customer_type}

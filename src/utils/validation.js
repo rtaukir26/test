@@ -10,9 +10,9 @@ export const formValidation = (data) => {
   // if (!data.practice_name) {
   //   response["practice_name"] = "Please select practice name";
   // }
-  if (!data.cost_center) {
-    response["cost_center"] = "Please enter const center owner";
-  }
+  // if (!data.cost_center_owner) {
+  //   response["cost_center_owner"] = "Please enter const center owner";
+  // }
   if (!data.project_name) {
     response["project_name"] = "Please enter project name";
   }
