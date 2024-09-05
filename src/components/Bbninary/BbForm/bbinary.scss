@@ -19,6 +19,15 @@
       width: 32%;
       color: $main-white;
       position: relative;
+      .add-new-customer {
+        position: absolute;
+        color: #fff;
+        font-size: 13px;
+        right: 9px;
+        top: 5px;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+      }
 
       // .form-col-sec {
       img {

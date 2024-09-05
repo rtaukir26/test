@@ -42,6 +42,7 @@ const BbForm = () => {
     { name: "UK", value: "UK" },
     { name: "AU", value: "AU" },
     { name: "NA", value: "NA" },
+    { name: "Not Applicable", value: "Not Applicable" },
   ];
 
   const CurrencyOption = [
@@ -49,7 +50,6 @@ const BbForm = () => {
     { name: "USD", value: "USD" },
     { name: "EUR", value: "EUR" },
     { name: "GBP", value: "GBP" },
-    { name: "NA", value: "NA" },
   ];
   // const BusinessFunction = [
   //   "Admin & Operations",
@@ -102,7 +102,7 @@ const BbForm = () => {
       value: "Technology Platform or Solution Providers",
     },
     { name: "Semiconductor Suppliers", value: "Semiconductor Suppliers" },
-    { name: "NA", value: "NA" },
+    { name: "Not Applicable", value: "Not Applicable" },
   ];
   const [budgetDataApi, setBudgetDataApi] = useState([
     {
@@ -154,7 +154,10 @@ const BbForm = () => {
             obj["value"] = obj["unitname"];
             return obj;
           });
-          setBusinessFunction([...deptDetails, { name: "NA", value: "NA" }]);
+          setBusinessFunction([
+            ...deptDetails,
+            { name: "Not Applicable", value: "Not Applicable" },
+          ]);
           // setBusinessFunction(res.data.department);
         }
       })
@@ -169,7 +172,10 @@ const BbForm = () => {
             obj["value"] = obj["client_name"];
             return obj;
           });
-          setCustomerApiData([...cusDetails, { name: "NA", value: "NA" }]);
+          setCustomerApiData([
+            ...cusDetails,
+            { name: "Not Applicable", value: "Not Applicable" },
+          ]);
         }
       })
       .catch((err) => err);
@@ -190,7 +196,10 @@ const BbForm = () => {
             obj["value"] = obj["deptname"];
             return obj;
           });
-          setPracticeApiData([...practiceDetails, { name: "NA", value: "NA" }]);
+          setPracticeApiData([
+            ...practiceDetails,
+            { name: "Not Applicable", value: "Not Applicable" },
+          ]);
         }
       })
       .catch((err) => err);
@@ -412,7 +421,9 @@ const BbForm = () => {
   //   filteredOptions.length === 0 && searchTerm
   //     ? [{ name: "No Option Found", value: "" }]
   //     : filteredOptions;
-
+  // const handleClickAddNewCustomer = () => {
+  //   setIsAddingNew(!isAddingNew);
+  // };
   return (
     <div className="bb-main-con">
       <div className="bb-main-body">
@@ -529,10 +540,10 @@ const BbForm = () => {
 
             {/* Customer Type --6 */}
             <div
-              // className="field-con form-col-sec select-search-container-section"
-              className={`field-con form-col-sec select-search-container-section ${
-                formErr?.customer_type && "field-error"
-              }`}
+              className="field-con form-col-sec select-search-container-section"
+              // className={`field-con form-col-sec select-search-container-section ${
+              //   formErr?.customer_type && "field-error"
+              // }`}
             >
               <label className="required">Customer Type </label>
               <SelectSearch
@@ -552,49 +563,71 @@ const BbForm = () => {
             </div>
 
             {/* Customer --7 */}
-
-            <div
-              className={`field-con form-col-sec select-search-container-section ${
-                formErr?.customer && "field-error"
-              }`}
-            >
-              <label className="required">Customer </label>
-              <span>Add New Customer</span>
-              <SelectSearch
-                options={customerNameApi}
-                value={formValues.customer}
-                onChange={(value) => {
-                  setFormValues((prevValues) => ({
-                    ...prevValues,
-                    customer: value,
-                  }));
-                }}
-                name="projectType"
-                placeholder="Select Customer"
-                search={true}
-                // onSearch={(term) => {
-                //   setSearchTerm(term);
-                // }}
-                // renderOption={(option) => (
-                //   <div>
-                //     {option.value === "" ? (
-                //       <div
-                //         style={{
-                //           color: "red",
-                //           padding: "10px",
-                //           textAlign: "center",
-                //         }}
-                //       >
-                //         No Option Found
-                //       </div>
-                //     ) : (
-                //       <div>{option.name}</div>
-                //     )}
-                //   </div>
-                // )}
-              />
-              <img src={DropdownIcon} alt="dropdown" />
-            </div>
+            {isAddingNew ? (
+              <div className="field-con">
+                <label htmlFor="project_name">Customer</label>
+                <span
+                  className="add-new-customer"
+                  onClick={(e) => {
+                    setFormValues((prevValues) => ({
+                      ...prevValues,
+                      customer: "",
+                    }));
+                    setIsAddingNew(!isAddingNew);
+                  }}
+                >
+                  Select Customer
+                </span>
+                <input
+                  // className={formErr?.customer && "field-error"}
+                  type="text"
+                  name="project_name"
+                  placeholder="Enter customer name"
+                  value={formValues.customer}
+                  onChange={(e) => {
+                    setFormValues((prevValues) => ({
+                      ...prevValues,
+                      customer: e.target.value,
+                    }));
+                  }}
+                />
+              </div>
+            ) : (
+              <div
+                className="field-con form-col-sec select-search-container-section"
+                // className={`field-con form-col-sec select-search-container-section ${
+                //   formErr?.customer && "field-error"
+                // }`}
+              >
+                <label className="required">Customer </label>
+                <span
+                  className="add-new-customer"
+                  onClick={() => {
+                    setFormValues((prevValues) => ({
+                      ...prevValues,
+                      customer: "",
+                    }));
+                    setIsAddingNew(!isAddingNew);
+                  }}
+                >
+                  Add New Customer
+                </span>
+                <SelectSearch
+                  options={customerNameApi}
+                  value={formValues.customer}
+                  onChange={(value) => {
+                    setFormValues((prevValues) => ({
+                      ...prevValues,
+                      customer: value,
+                    }));
+                  }}
+                  name="projectType"
+                  placeholder="Select Customer"
+                  search={true}
+                />
+                <img src={DropdownIcon} alt="dropdown" />
+              </div>
+            )}
 
             {/* Currency */}
             <div

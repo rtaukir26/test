@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import routePath from "../../../routes/routePath";
-import { getBudgetList } from "../../../services/budgetViewServices";
+import {
+  getBudgetList,
+  getBudgetListExport,
+} from "../../../services/budgetViewServices";
 import downloadIcon from "../../../assets/images/file.png";
 import noDataFoundIcon from "../../../assets/images/no-data-found.png";
 import * as XLSX from "xlsx";
@@ -9,23 +12,32 @@ import moment from "moment";
 
 const BudgetView = () => {
   const [budgetListApi, setBudgetList] = useState([]);
+  const [budgetListExportData, setBudgetListExportData] = useState([]);
   console.log("budgetListApi", budgetListApi);
+  console.log("budgetListExportData", budgetListExportData);
 
   useEffect(() => {
     getBudgetList()
       .then((res) => {
-        if (res.status == 200 && res.data) setBudgetList(res.data.viewData);
+        if (res.status === 200 && res.data) setBudgetList(res.data.viewData);
+      })
+      .catch((err) => err);
+    getBudgetListExport()
+      .then((res) => {
+        console.log("res", res);
+        if (res.status === 200 && res.data)
+          setBudgetListExportData(res.data.tickets);
       })
       .catch((err) => err);
   }, []);
 
   //download data as exel
   const exportBudgetSheet = (e) => {
-    // let Heading = [["SNo", "Cost Centre Code", "Budget"]];
+    let Heading = [["SNo", "Cost Centre Code", "Budget"]];
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(budgetListApi);
-    // XLSX.utils.sheet_add_aoa(worksheet, Heading);
-    XLSX.utils.sheet_add_aoa(worksheet);
+    const worksheet = XLSX.utils.json_to_sheet(budgetListExportData);
+    XLSX.utils.sheet_add_aoa(worksheet, Heading);
+    // XLSX.utils.sheet_add_aoa(worksheet);
     // XLSX.utils.sheet_add_json(worksheet, arr, { origin: 'A2', skipHeader: true });
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(
@@ -120,7 +132,6 @@ const BudgetView = () => {
                       <td title={item.region}>{item.region}</td>
                       <td title={item.business_function} className="truncate">
                         {item.business_function}
-                        {/* <span className="truncate">{item.business_function}</span> */}
                       </td>
                       <td title={item.practice_name}>{item.practice_name}</td>
                       <td title={item.cost_center}>{item.cost_center}</td>

@@ -6,5 +6,7 @@ export const apiEndpoints = {
   customerFilter: `${Base_url}/budget-app/customer-filter`,
   saveFilter: `${Base_url}/budget-app/add-budgetData`,
   viewBudgetData: `${Base_url}/budget-app/view-budgetData`,
+  viewBudgetDataExport: `${Base_url}/budget-app/export-budgetData`,
   viewBudgetReport: `${Base_url}/budget-app/view-budgetReport`,
+  viewBudgetReportExport: `${Base_url}/budget-app/export-budgetReport`,
 };

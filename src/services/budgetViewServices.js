@@ -11,9 +11,30 @@ export const getBudgetList = async () => {
     },
   });
 };
+
+export const getBudgetListExport = async () => {
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.viewBudgetDataExport, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
+};
 export const getReportList = async () => {
   let token = getUserIdToken();
   return await axios.get(apiEndpoints.viewBudgetReport, {
+    headers: {
+      Authorization: token,
+      // Authorization: "Bearer " + token,
+    },
+  });
+};
+
+
+export const getReportListExport = async () => {
+  let token = getUserIdToken();
+  return await axios.get(apiEndpoints.viewBudgetReportExport, {
     headers: {
       Authorization: token,
       // Authorization: "Bearer " + token,
