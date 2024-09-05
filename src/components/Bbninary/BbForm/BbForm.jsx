@@ -372,21 +372,21 @@ const BbForm = () => {
   useEffect(() => {
     let errorMsg = { ...formErr };
 
-    if (formValues.region !== "" && formValues.region !== undefined) {
-      delete errorMsg.region;
-    }
-    if (
-      formValues.business_function !== "" &&
-      formValues.business_function !== undefined
-    ) {
-      delete errorMsg.business_function;
-    }
-    if (
-      formValues.practice_name !== "" &&
-      formValues.practice_name !== undefined
-    ) {
-      delete errorMsg.practice_name;
-    }
+    // if (formValues.region !== "" && formValues.region !== undefined) {
+    //   delete errorMsg.region;
+    // }
+    // if (
+    //   formValues.business_function !== "" &&
+    //   formValues.business_function !== undefined
+    // ) {
+    //   delete errorMsg.business_function;
+    // }
+    // if (
+    //   formValues.practice_name !== "" &&
+    //   formValues.practice_name !== undefined
+    // ) {
+    //   delete errorMsg.practice_name;
+    // }
     if (formValues.cost_center !== "" && formValues.cost_center !== undefined) {
       delete errorMsg.cost_center;
     }
@@ -396,15 +396,15 @@ const BbForm = () => {
     ) {
       delete errorMsg.project_name;
     }
-    if (
-      formValues.customer_type !== "" &&
-      formValues.customer_type !== undefined
-    ) {
-      delete errorMsg.customer_type;
-    }
-    if (formValues.customer !== "" && formValues.customer !== undefined) {
-      delete errorMsg.customer;
-    }
+    // if (
+    //   formValues.customer_type !== "" &&
+    //   formValues.customer_type !== undefined
+    // ) {
+    //   delete errorMsg.customer_type;
+    // }
+    // if (formValues.customer !== "" && formValues.customer !== undefined) {
+    //   delete errorMsg.customer;
+    // }
     if (formValues.currency !== "" && formValues.currency !== undefined) {
       delete errorMsg.currency;
     }
