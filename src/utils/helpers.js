@@ -35,12 +35,7 @@ export const calculateRowTotal = (row, isActual) => {
 
     0
   );
-  // return row.entries?.reduce(
-  //   (acc, curr) => {
 
-  //     return  acc + (parseFloat(curr?.estimatedBudget) || 0),0}
-
-  // );
 };
 export const calculateTotals = (data, months, commonMonthMap, tabName) => {
   let totalHour = 160; //20 days * 8 hours = 160 Hour Rate

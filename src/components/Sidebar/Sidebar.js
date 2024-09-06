@@ -12,18 +12,24 @@ import budgetPlan from "../../assets/images/budgetPlan.png";
 import { NavLink } from "react-router-dom";
 import routePath from "../../routes/routePath";
 import { decodeUser } from "../../services/auth";
+import { useEffect, useState } from "react";
+import { getUserAccessList } from "../../services/sidebarService";
 // import { NavLink, useLocation } from "react-router-dom";
 // import { mainRoutePaths } from "../../Routes/RoutePaths";
 // import { decodeUser } from "../../constants/decryptToken.js";
 // import jwtDecode from "jwt-decode";
 
 const Sidebar = () => {
+  const [accessUser2, setaccessUser2] = useState([]);
+
   const accessUser = [
     "devanshi.jadav@yopmail.com",
+    "kishore@bluebinaries.com",
     "Venkatesh.Krishnan@bluebinaries.com",
+    "sreekanth.mallampati@bluebinaries.com",
     "puttaiah.bellamkonda@bluebinaries.com",
-    "natesan.ramanathan@bluebinaries.com",
-    "pravin.s@bluebinaries.com",
+    // "natesan.ramanathan@bluebinaries.com",
+    // "pravin.s@bluebinaries.com",
   ];
   let tokenDetails = decodeUser();
   console.log("tokenDetails", tokenDetails);
@@ -37,6 +43,16 @@ const Sidebar = () => {
   // console.log("ddd type", type);
   // console.log("ddd locationState", location.state);
   // let access = jwtDecode(localStorage.getItem("USER_ACCESS"));
+
+  // useEffect(() => {
+  //   getUserAccessList()
+  //     .then((res) => {
+  //       if (res.status === 200 && res.data) {
+  //         setaccessUser2(res.data.tickets);
+  //       }
+  //     })
+  //     .catch((err) => err);
+  // }, []);
   return (
     <div className="sidebar-container">
       <div className="sidebar-body">
@@ -72,6 +88,7 @@ const Sidebar = () => {
             <span>My Submitted Budget</span>
           </div>
         </NavLink>
+        {/* {accessUser2.includes(tokenDetails.emailAddress) && (/ */}
         {accessUser.includes(tokenDetails.emailAddress) && (
           <NavLink to={routePath.allBudgetList}>
             <div className="project-con">

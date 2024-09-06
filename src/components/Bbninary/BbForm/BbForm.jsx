@@ -385,9 +385,9 @@ const BbForm = () => {
   useEffect(() => {
     let errorMsg = { ...formErr };
 
-    // if (formValues.region !== "" && formValues.region !== undefined) {
-    //   delete errorMsg.region;
-    // }
+    if (formValues.region !== "" && formValues.region !== undefined) {
+      delete errorMsg.region;
+    }
     if (
       formValues.business_function !== "" &&
       formValues.business_function !== undefined
@@ -462,7 +462,7 @@ const BbForm = () => {
       <div className="bb-main-body">
         <ConfirmPopup
           headerTitle="Budget planner"
-          title="Are your sure you want to submit ?"
+          title="Are you sure want to submit ?"
           isModalOpen={isSubmit}
           handleCancel={setIsSubmit}
           handleSubmitConfirm={handleConfirmSubmit}
@@ -471,12 +471,14 @@ const BbForm = () => {
           <div className="form-div">
             {/* Region --1 */}
             <div
-              // className={`field-con form-col-sec select-search-container-section ${
-              //   formErr?.region && "field-error"
-              // }`}
-              className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.region && "field-error"
+              }`}
+              // className="field-con form-col-sec select-search-container-section"
             >
-              <label className="required">Region</label>
+              <label className="required">
+                Region<small className="mandatory-small">*</small>
+              </label>
               <SelectSearch
                 options={Region2}
                 value={formValues.region}
@@ -500,7 +502,9 @@ const BbForm = () => {
                 formErr?.business_function && "field-error"
               }`}
             >
-              <label className="required">Business Function<small className="mandatory-small">*</small></label>
+              <label className="required">
+                Business Function<small className="mandatory-small">*</small>
+              </label>
               <SelectSearch
                 options={BusinessFunction}
                 value={formValues.business_function}
@@ -528,7 +532,10 @@ const BbForm = () => {
                 formErr?.practice_name && "field-error"
               }`}
             >
-              <label className="required">Department/Practice Name<small className="mandatory-small">*</small></label>
+              <label className="required">
+                Department/Practice Name
+                <small className="mandatory-small">*</small>
+              </label>
               <SelectSearch
                 options={practiceNameApi}
                 value={formValues.practice_name}
@@ -842,7 +849,7 @@ const BbForm = () => {
                               <td key={idx}>
                                 <div className="month-td-div">
                                   <input
-                                    type="text"
+                                    type="number"
                                     value={getMonthValue(row, monthValue, idx)}
                                     onChange={(e) =>
                                       handleMonthChange(

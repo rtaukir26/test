@@ -116,8 +116,8 @@ const BudgetView = () => {
                     {/* <th>Customer Type</th> */}
                     {/* <th>Customer</th> */}
                     <th>Budget Type</th>
-                    <th>Item Description</th>
                     <th>Cost Center</th>
+                    <th>Item Description</th>
                     <th>Currency</th>
                     <th>Oct-24</th>
                     <th>Nov-24</th>
@@ -129,32 +129,56 @@ const BudgetView = () => {
                 <tbody>
                   {budgetListApi?.map((item, i) => (
                     <tr>
-                      <td title={item.region}>{item.region}</td>
+                      <td title={item.region}>
+                        {item.region ? item.region : "--"}
+                      </td>
                       <td title={item.business_function} className="truncate">
-                        {item.business_function}
+                        {item.business_function ? item.business_function : "--"}
                       </td>
-                      <td title={item.practice_name}>{item.practice_name}</td>
+                      <td title={item.practice_name}>
+                        {item.practice_name ? item.practice_name : "--"}
+                      </td>
                       <td title={item.cost_center_owner}>
-                        {item.cost_center_owner}
+                        {item.cost_center_owner ? item.cost_center_owner : "--"}
                       </td>
-                      <td title={item.project_name}>{item.project_name}</td>
+                      <td title={item.project_name}>
+                        {item.project_name ? item.project_name : "--"}
+                      </td>
                       {/* <td title={item.customer_type} className="truncate">
                         {item.customer_type}
                       </td> */}
                       {/* <td title={item.customer} className="truncate">
                         {item.customer}
                       </td> */}
-                      <td title={item.budget_type}>{item.budget_type}</td>
-                      <td title={item.item_description}>
-                        {item.item_description}
+                      <td title={item.budget_type}>
+                        {item.budget_type ? item.budget_type : "--"}
                       </td>
-                      <td title={item.cost_center}>{item.cost_center}</td>
-                      <td title={item.currency}>{item.currency}</td>
-                      <td title={item.month_1}>{item.month_1}</td>
-                      <td title={item.month_2}>{item.month_2}</td>
-                      <td title={item.month_3}>{item.month_3}</td>
-                      <td title={item.budget_total}>{item.budget_total}</td>
-                      <td title={item.remarks}>{item.remarks}</td>
+                      <td title={item.cost_center}>
+                        {item.cost_center ? item.cost_center : "--"}
+                      </td>
+                      <td title={item.item_description}>
+                        {item.item_descriptionitem
+                          ? item.item_descriptionitem
+                          : "--"}
+                      </td>
+                      <td title={item.currency}>
+                        {item.currency ? item.currency : "--"}
+                      </td>
+                      <td title={item.month_1}>
+                        {item.month_1 ? item.month_1 : "--"}
+                      </td>
+                      <td title={item.month_2}>
+                        {item.month_2 ? item.month_2 : "--"}
+                      </td>
+                      <td title={item.month_3}>
+                        {item.month_3 ? item.month_3 : "--"}
+                      </td>
+                      <td title={item.budget_total}>
+                        {item.budget_total ? item.budget_total : "--"}
+                      </td>
+                      <td title={item.remarks}>
+                        {item.remarks ? item.remarks : "--"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

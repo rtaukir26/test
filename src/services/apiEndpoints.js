@@ -9,4 +9,5 @@ export const apiEndpoints = {
   viewBudgetDataExport: `${Base_url}/budget-app/export-budgetData`,
   viewBudgetReport: `${Base_url}/budget-app/view-budgetReport`,
   viewBudgetReportExport: `${Base_url}/budget-app/export-budgetReport`,
+  isAccessAll: `${Base_url}/budget-app/getAccessMailId`,
 };

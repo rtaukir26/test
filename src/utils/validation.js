@@ -1,9 +1,9 @@
 export const formValidation = (data) => {
   let response = [];
 
-  // if (!data.region) {
-  //   response["region"] = "Please select region";
-  // }
+  if (!data.region) {
+    response["region"] = "Please select region";
+  }
   if (!data.business_function) {
     response["business_function"] = "Please select department name";
   }
