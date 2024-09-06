@@ -110,6 +110,7 @@
       .child-body {
         width: 100%;
         padding: 10px;
+        overflow-x: auto;
         .total-budget {
           display: flex;
           justify-content: center;
@@ -165,6 +166,7 @@
               color: $main-white;
               white-space: nowrap;
               padding: 8px;
+              text-align: center;
             }
           }
           tbody {

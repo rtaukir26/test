@@ -20,7 +20,9 @@ import { getUserAccessList } from "../../services/sidebarService";
 // import jwtDecode from "jwt-decode";
 
 const Sidebar = () => {
-  const [accessUser2, setaccessUser2] = useState([]);
+  const [isAccessUser, setIsAccesuser] = useState(false);
+
+  console.log("isAccessUser", isAccessUser);
 
   const accessUser = [
     "devanshi.jadav@yopmail.com",
@@ -44,15 +46,16 @@ const Sidebar = () => {
   // console.log("ddd locationState", location.state);
   // let access = jwtDecode(localStorage.getItem("USER_ACCESS"));
 
-  // useEffect(() => {
-  //   getUserAccessList()
-  //     .then((res) => {
-  //       if (res.status === 200 && res.data) {
-  //         setaccessUser2(res.data.tickets);
-  //       }
-  //     })
-  //     .catch((err) => err);
-  // }, []);
+  useEffect(() => {
+    getUserAccessList()
+      .then((res) => {
+        console.log("res", res);
+        if (res.status === 200 && res.data) {
+          setIsAccesuser(res.data.userAccess?.super_access);
+        }
+      })
+      .catch((err) => err);
+  }, []);
   return (
     <div className="sidebar-container">
       <div className="sidebar-body">
@@ -89,7 +92,7 @@ const Sidebar = () => {
           </div>
         </NavLink>
         {/* {accessUser2.includes(tokenDetails.emailAddress) && (/ */}
-        {accessUser.includes(tokenDetails.emailAddress) && (
+        {isAccessUser===1 && (
           <NavLink to={routePath.allBudgetList}>
             <div className="project-con">
               <img src={InhouseImg} alt="project" />

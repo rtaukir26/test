@@ -11,18 +11,30 @@ import noDataFoundIcon from "../../../assets/images/no-data-found.png";
 
 import * as XLSX from "xlsx";
 import moment from "moment";
+import LoaderCommon from "../../LoaderCommon/LoaderCommon";
+import { toast } from "react-toastify";
 
 const AllBudgetList = () => {
   const [budgetListApi, setBudgetList] = useState([]);
   const [reportListExportData, setReportListExportData] = useState([]);
+  const [isloader, setIsLoader] = useState(true);
   console.log("budgetListApi", budgetListApi);
 
   useEffect(() => {
     getReportList()
       .then((res) => {
-        if (res.status === 200 && res.data) setBudgetList(res.data.tickets);
+        setIsLoader(true);
+        if (res.statusCode === 200 || (res.status === 200 && res.data)) {
+          setIsLoader(false);
+          setBudgetList(res.data.tickets);
+        } else {
+          toast.error("Network Error");
+          setIsLoader(false);
+        }
       })
-      .catch((err) => err);
+      .catch((err) => {
+        setIsLoader(false);
+      });
     getReportListExport()
       .then((res) => {
         if (res.status === 200 && res.data)
@@ -53,7 +65,6 @@ const AllBudgetList = () => {
         <div className="budget-view">
           {budgetListApi?.length > 0 ? (
             <>
-              {" "}
               <div className="download-btn">
                 <button onClick={exportBudgetSheet}>
                   <img
@@ -68,8 +79,8 @@ const AllBudgetList = () => {
                 <thead>
                   <tr>
                     <th>Region</th>
-                    <th>Department</th>
-                    <th>Practice Name</th>
+                    <th>Business Function</th>
+                    <th>Department/Practice Name</th>
                     <th>Cost Center Owner</th>
                     <th>Project Name</th>
                     {/* <th>Customer Type</th> */}
@@ -116,9 +127,7 @@ const AllBudgetList = () => {
                         {item.cost_center ? item.cost_center : "--"}
                       </td>
                       <td title={item.item_description}>
-                        {item.item_descriptionitem
-                          ? item.item_descriptionitem
-                          : "--"}
+                        {item.item_description ? item.item_description : "--"}
                       </td>
                       <td title={item.currency}>
                         {item.currency ? item.currency : "--"}
@@ -143,6 +152,8 @@ const AllBudgetList = () => {
                 </tbody>
               </table>
             </>
+          ) : isloader ? (
+            <LoaderCommon />
           ) : (
             <div className="no-data-found">
               <p>No Data Found</p>

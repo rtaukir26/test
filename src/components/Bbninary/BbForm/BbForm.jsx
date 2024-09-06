@@ -1,13 +1,11 @@
 import { Toast } from "bootstrap";
 import React, { useEffect, useState } from "react";
-import { MultiSelect } from "react-multi-select-component";
 import SelectSearch from "react-select-search";
 import "react-select-search/style.css";
 import { toast } from "react-toastify";
 import deleteIcon from "../../../assets/images/delete.png";
 import DropdownIcon from "../../../assets/images/down-arrow.png";
 
-import Modal from "react-modal";
 import {
   calculateRowTotal,
   calculateTotals,
@@ -15,7 +13,6 @@ import {
   monthMap,
 } from "../../../utils/helpers";
 import { formValidation } from "../../../utils/validation";
-import axios from "axios";
 import {
   getCustomerData,
   getDepartmentData,
@@ -25,6 +22,7 @@ import {
 import ConfirmPopup from "../SubmitPopup/SubmitPopup/ConfirmPopup";
 import { useNavigate } from "react-router-dom";
 import routePath from "../../../routes/routePath";
+import { decode } from "html-entities";
 
 const BbForm = () => {
   const navigate = useNavigate();
@@ -33,11 +31,22 @@ const BbForm = () => {
   const [isChildError, setIsChildError] = useState(false);
   const [formErr, setFormErr] = useState();
   const [budgetTotal, setBudgetTotal] = useState(0);
+  const currencySymbols = {
+    INR: "&#8377;",
+    EUR: "&euro;",
+    GBP: "&pound;",
+    USD: "&dollar;",
+    CNY: "&#165;",
+  };
+
+  const currencyIcon = () => {
+    return currencySymbols[formValues?.currency];
+  };
   const Region2 = [
     { name: "APAC", value: "APAC" },
-    { name: "EU", value: "EU" },
-    { name: "UK", value: "UK" },
     { name: "AU", value: "AU" },
+    { name: "GER", value: "GER" },
+    { name: "UK", value: "UK" },
     { name: "NA", value: "NA" },
   ];
 
@@ -47,50 +56,6 @@ const BbForm = () => {
     { name: "EUR", value: "EUR" },
     { name: "GBP", value: "GBP" },
   ];
-
-  const currencyIcon = { INR: "" };
-  // const BusinessFunction = [
-  //   "Admin & Operations",
-  //   "Business Development",
-  //   "Delivery Projects",
-  //   "Finance & Legal",
-  //   "Function Main",
-  //   "Function Practice",
-  //   "Human Resources",
-  //   "IT Systems",
-  //   "Marketing & Communications",
-  //   "PMO",
-  //   "Presales",
-  //   "Quality Management",
-  // ];
-  // const PracticeName = [
-  //   "Business Development",
-  //   "Delivery",
-  //   "Diagnostics Development and EOL Solutions",
-  //   "Digital Engineering & Enterprise IT",
-  //   "E/E Integration & Vehicle Testing",
-  //   "Finance & Legal",
-  //   "Functional Safety & Cyber Security",
-  //   "Hardware",
-  //   "HR Ops",
-  //   "Lighting Systems",
-  //   "Marketing & Communications",
-  //   "	PMO",
-  //   "Presales",
-  //   "Process & Quality",
-  //   "SG&A",
-  //   "Software Design & Development",
-  //   "Test & Validation Solutions",
-  //   "Vehicle Engineering & System Development",
-  // ];
-  // const Customer = [
-  //   "KGM",
-  //   "JCB",
-  //   "EE Architecture",
-  //   "Digitial Mobility",
-  //   "Add New +",
-  // ];
-  // const CustomerType = ["SG&A", "OEM", "Sys Supplier", "Practice", "Others"];
 
   const CustomerType = [
     { name: "OEM", value: "OEM" },
@@ -151,10 +116,7 @@ const BbForm = () => {
             obj["value"] = obj["unitname"];
             return obj;
           });
-          setBusinessFunction([
-            ...deptDetails,
-            { name: "Not Applicable", value: "Not Applicable" },
-          ]);
+          setBusinessFunction(deptDetails);
           // setBusinessFunction(res.data.department);
         }
       })
@@ -169,10 +131,7 @@ const BbForm = () => {
             obj["value"] = obj["client_name"];
             return obj;
           });
-          setCustomerApiData([
-            ...cusDetails,
-            { name: "Not Applicable", value: "Not Applicable" },
-          ]);
+          setCustomerApiData(cusDetails);
         }
       })
       .catch((err) => err);
@@ -193,10 +152,7 @@ const BbForm = () => {
             obj["value"] = obj["deptname"];
             return obj;
           });
-          setPracticeApiData([
-            ...practiceDetails,
-            { name: "Not Applicable", value: "Not Applicable" },
-          ]);
+          setPracticeApiData(practiceDetails);
         }
       })
       .catch((err) => err);
@@ -374,12 +330,12 @@ const BbForm = () => {
   let totals = calculateTotals(budgetDataApi, months, monthMap, "R");
 
   // calc total entered budget
-  useEffect(() => {
-    let bdgtTotal = totals
-      .reduce((acc, curr) => acc + curr.value, 0)
-      .toFixed(2);
-    setBudgetTotal(bdgtTotal);
-  }, [totals]);
+  // useEffect(() => {
+  //   let bdgtTotal = totals
+  //     .reduce((acc, curr) => acc + curr.value, 0)
+  //     .toFixed(2);
+  //   setBudgetTotal(bdgtTotal);
+  // }, [totals]);
 
   //Validation field
   useEffect(() => {
@@ -427,36 +383,6 @@ const BbForm = () => {
     setFormErr(errorMsg);
   }, [formValues]);
 
-  // Filter options based on the search term
-  // const filteredOptions = customerNameApi.filter((option) =>
-  //   option.name.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
-
-  // // Add a custom message when no options are found
-  // const displayOptions =
-  //   filteredOptions.length === 0 && searchTerm
-  //     ? [{ name: "No Option Found", value: "" }]
-  //     : filteredOptions;
-  // const handleClickAddNewCustomer = () => {
-  //   setIsAddingNew(!isAddingNew);
-  // };
-
-  // const handleGetMonthVal = (row, monthValue, idx) => {
-  //   let month = monthValue.split("-")[0]; //"Jan-24",... ---> "Jan"
-  //   const monthNumber = monthMap[month]; //"01","02",..
-  //   let value = 0;
-  //   value = row.entries?.filter((item) => {
-  //     if (item?.budgetMonth === monthNumber?.toString()) {
-  //       return item;
-  //     }
-  //   });
-  //   let updateData = [...budgetDataApi];
-  //   // updateData[idx].budget_total = parseFloat(value[0]?.estimatedBudget);
-  //   // setBudgetDataApi(updateData);
-  //   console.log("updateData", updateData);
-
-  //   return value[0]?.estimatedBudget;
-  // };
   return (
     <div className="bb-main-con">
       <div className="bb-main-body">
@@ -709,9 +635,15 @@ const BbForm = () => {
                             <div>
                               TOTAL Q3 BUDGET:
                               <span>
+                                {/* {decode(currencyIcon(), { level: 'html5' })}
                                 {totals
                                   .reduce((acc, curr) => acc + curr.value, 0)
-                                  .toFixed(2)}
+                                  .toFixed(2)} */}
+                                {`${decode(currencyIcon(), {
+                                  level: "html5",
+                                })} ${totals
+                                  .reduce((acc, curr) => acc + curr.value, 0)
+                                  .toFixed(2)}`}
                               </span>
                             </div>
                           </th>
@@ -764,7 +696,7 @@ const BbForm = () => {
                                     "field-error"
                                   }
                                 >
-                                  <option value="">Select Budget Type</option>
+                                  <option value="">--Select--</option>
                                   <option value="Resources">Resources</option>
                                   <option value="Capex">Capex</option>
                                   <option value="Opex">Opex</option>
@@ -930,9 +862,11 @@ const BbForm = () => {
                             </div>
                           </td>
                           {totals.map((total, index) => (
-                            <td key={index}>{total.value}</td> // Format to two decimal places
+                            <td style={{ textAlign: "end" }} key={index}>
+                              {total.value}
+                            </td> // Format to two decimal places
                           ))}
-                          <td>
+                          <td style={{ textAlign: "end" }}>
                             {totals
                               .reduce((acc, curr) => acc + curr.value, 0)
                               .toFixed(2)}

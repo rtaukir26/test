@@ -3,16 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
 @mixin for-pc {
   @media (max-width: 1200px) {
     @content;
@@ -154,6 +145,52 @@ span {
     width: 500px;
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.loading-common {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  height: calc(100vh - 200px);
+  img {
+    width: 20px;
+    filter: invert(1);
+    margin-right: 5px;
+    animation: loaderRotateSection 3s linear infinite;
+  }
+  span {
+    color: #fff;
+    font-size: 16px;
+  }
+}
+
+@keyframes loaderRotateSection {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+
+
+
+
 //scrollbar
 /* width */
 ::-webkit-scrollbar {
