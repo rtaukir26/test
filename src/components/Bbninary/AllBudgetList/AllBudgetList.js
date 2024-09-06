@@ -72,8 +72,8 @@ const AllBudgetList = () => {
                     <th>Practice Name</th>
                     <th>Cost Center Owner</th>
                     <th>Project Name</th>
-                    <th>Customer Type</th>
-                    <th>Customer</th>
+                    {/* <th>Customer Type</th> */}
+                    {/* <th>Customer</th> */}
                     <th>Budget Type</th>
                     <th>Item Description</th>
                     <th>Cost Center</th>
@@ -98,12 +98,12 @@ const AllBudgetList = () => {
                         {item.cost_center_owner}
                       </td>
                       <td title={item.project_name}>{item.project_name}</td>
-                      <td title={item.customer_type} className="truncate">
+                      {/* <td title={item.customer_type} className="truncate">
                         {item.customer_type}
-                      </td>
-                      <td title={item.customer} className="truncate">
+                      </td> */}
+                      {/* <td title={item.customer} className="truncate">
                         {item.customer}
-                      </td>
+                      </td> */}
                       <td title={item.budget_type}>{item.budget_type}</td>
                       <td title={item.item_description}>
                         {item.item_description}

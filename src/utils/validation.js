@@ -4,12 +4,12 @@ export const formValidation = (data) => {
   // if (!data.region) {
   //   response["region"] = "Please select region";
   // }
-  // if (!data.business_function) {
-  //   response["business_function"] = "Please select department name";
-  // }
-  // if (!data.practice_name) {
-  //   response["practice_name"] = "Please select practice name";
-  // }
+  if (!data.business_function) {
+    response["business_function"] = "Please select department name";
+  }
+  if (!data.practice_name) {
+    response["practice_name"] = "Please select practice name";
+  }
   if (!data.cost_center_owner) {
     response["cost_center_owner"] = "Please enter cost center owner";
   }

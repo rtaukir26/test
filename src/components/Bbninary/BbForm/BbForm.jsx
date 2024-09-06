@@ -127,9 +127,9 @@ const BbForm = () => {
     cost_center_owner: "",
     project_name: "",
     practice_name: "",
-    customer: "",
+    // customer: "",
     currency: "",
-    customer_type: "",
+    // customer_type: "",
     financial_year: "2024-2025",
     f_quarter: "3",
   });
@@ -260,7 +260,6 @@ const BbForm = () => {
       }
       return isValid;
     });
-    console.log("validated", validated, isChildDataFilled);
     if (Object.keys(validated)?.length > 0 || !isChildDataFilled) {
       setFormErr(validated);
       //   // toast.dismiss();
@@ -389,18 +388,18 @@ const BbForm = () => {
     // if (formValues.region !== "" && formValues.region !== undefined) {
     //   delete errorMsg.region;
     // }
-    // if (
-    //   formValues.business_function !== "" &&
-    //   formValues.business_function !== undefined
-    // ) {
-    //   delete errorMsg.business_function;
-    // }
-    // if (
-    //   formValues.practice_name !== "" &&
-    //   formValues.practice_name !== undefined
-    // ) {
-    //   delete errorMsg.practice_name;
-    // }
+    if (
+      formValues.business_function !== "" &&
+      formValues.business_function !== undefined
+    ) {
+      delete errorMsg.business_function;
+    }
+    if (
+      formValues.practice_name !== "" &&
+      formValues.practice_name !== undefined
+    ) {
+      delete errorMsg.practice_name;
+    }
     if (
       formValues.cost_center_owner !== "" &&
       formValues.cost_center_owner !== undefined
@@ -494,14 +493,14 @@ const BbForm = () => {
               <img src={DropdownIcon} alt="dropdown" />
             </div>
 
-            {/* Department/BusinessFunction --2 */}
+            {/* Business Function --2 */}
             <div
-              className="field-con form-col-sec select-search-container-section"
-              // className={`field-con form-col-sec select-search-container-section ${
-              //   formErr?.business_function && "field-error"
-              // }`}
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.business_function && "field-error"
+              }`}
             >
-              <label className="required">Business Function</label>
+              <label className="required">Business Function<small className="mandatory-small">*</small></label>
               <SelectSearch
                 options={BusinessFunction}
                 value={formValues.business_function}
@@ -524,12 +523,12 @@ const BbForm = () => {
 
             {/* Practice Name  --3 */}
             <div
-              className="field-con form-col-sec select-search-container-section"
-              // className={`field-con form-col-sec select-search-container-section ${
-              //   formErr?.practice_name && "field-error"
-              // }`}
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.practice_name && "field-error"
+              }`}
             >
-              <label className="required">Department/Practice Name</label>
+              <label className="required">Department/Practice Name<small className="mandatory-small">*</small></label>
               <SelectSearch
                 options={practiceNameApi}
                 value={formValues.practice_name}
@@ -575,7 +574,7 @@ const BbForm = () => {
             </div>
 
             {/* Customer Type --6 */}
-            <div
+            {/* <div
               className="field-con form-col-sec select-search-container-section"
               // className={`field-con form-col-sec select-search-container-section ${
               //   formErr?.customer_type && "field-error"
@@ -596,10 +595,10 @@ const BbForm = () => {
                 search={true}
               />
               <img src={DropdownIcon} alt="dropdown" />
-            </div>
+            </div> */}
 
             {/* Customer --7 */}
-            {isAddingNew ? (
+            {/* {isAddingNew ? (
               <div className="field-con">
                 <label htmlFor="project_name">Customer</label>
                 <span
@@ -663,7 +662,7 @@ const BbForm = () => {
                 />
                 <img src={DropdownIcon} alt="dropdown" />
               </div>
-            )}
+            )} */}
 
             {/* Currency */}
             <div
