@@ -199,6 +199,7 @@ const BbForm = () => {
   const handleAddMore = () => {
     let template = {
       budget_type: "",
+      budget_total: 0,
       item_description: "",
       cost_center: "",
       // currency: "",
@@ -223,6 +224,9 @@ const BbForm = () => {
     const validated = formValidation(formValues);
     let isChildDataFilled = budgetDataApi.every((item) => {
       let isValid = true;
+      if (item.budget_total === 0) {
+        isValid = false;
+      }
       if (!item.budget_type) {
         isValid = false;
       }
@@ -238,7 +242,7 @@ const BbForm = () => {
     if (Object.keys(validated)?.length > 0 || !isChildDataFilled) {
       setFormErr(validated);
       //   // toast.dismiss();
-      let msg = "Please fill all the mandatory fields.";
+      let msg = "Please complete all the fields.";
 
       toast.error(msg);
     } else {
@@ -249,12 +253,14 @@ const BbForm = () => {
   //popup OK button
   const handleConfirmSubmit = () => {
     setIsLoader(true);
-    // let updateTotal = budgetDataApi.map((item) => {
-    //   return { ...item, budget_total: parseFloat(budgetTotal) };
-    // });
-    // setBudgetDataApi(updateTotal);
-    let postData = { ...formValues, child: budgetDataApi };
-    // navigate(routePath.budgetView);
+    let updateTotal = budgetDataApi.map((item) => {
+      delete item.entries;
+      // return { ...item, budget_total: parseFloat(budgetTotal) };
+      return item;
+    });
+    console.log("updateTotal", updateTotal);
+    // let postData = { ...formValues, child: budgetDataApi };
+    let postData = { ...formValues, child: updateTotal };
 
     saveBudgetData(postData)
       .then((res) => {
@@ -358,84 +364,6 @@ const BbForm = () => {
     }
     setBudgetDataApi(newArray);
   };
-  // const handleMonthChange = (e, monthValue, rowIndex, idx, isActual) => {
-  //   const newArray = [...budgetDataApi];
-  //   if (!newArray[rowIndex]) {
-  //     console.error(`Row index ${rowIndex} is out of bounds in newArray.`);
-  //     return;
-  //   }
-
-  //   // Convert the input value to a number
-  //   let rawValue = parseFloat(e.target.value) || 0;
-  //   // Format the value as currency for display purposes
-  //   const formattedValue = new Intl.NumberFormat("en-IN", {
-  //     style: "currency",
-  //     currency: "INR",
-  //     maximumFractionDigits: 2,
-  //   }).format(rawValue);
-  //   console.log("formattedValue", formattedValue);
-  //   // Update the array with the formatted value for display
-  //   if (idx === 0) {
-  //     newArray[rowIndex].month_1 = formattedValue;
-  //   }
-  //   if (idx === 1) {
-  //     newArray[rowIndex].month_2 = formattedValue;
-  //   }
-  //   if (idx === 2) {
-  //     newArray[rowIndex].month_3 = formattedValue;
-  //   }
-
-  //   // Calculate total using raw values
-  //   const total =
-  //     (parseFloat(newArray[rowIndex].month_1?.replace(/[^0-9.-]/g, "")) || 0) +
-  //     (parseFloat(newArray[rowIndex].month_2?.replace(/[^0-9.-]/g, "")) || 0) +
-  //     (parseFloat(newArray[rowIndex].month_3?.replace(/[^0-9.-]/g, "")) || 0);
-
-  //   // Format total as currency for display
-  //   newArray[rowIndex].budget_total = new Intl.NumberFormat("en-IN", {
-  //     style: "currency",
-  //     currency: "INR",
-  //     maximumFractionDigits: 2,
-  //   }).format(total);
-
-  //   // -----------------
-
-  //   let monthName = monthValue?.split("-")[0]; //"Jan,Feb",..
-  //   const monthNumber = monthMap[monthName]; //"04","05",..
-
-  //   const month = monthNumber.toString();
-  //   const yearShort = monthValue?.split("-")[1]; // "2024"
-
-  //   // Find the index of the entry to update or remove
-  //   const entryIndex = newArray[rowIndex]?.entries?.findIndex(
-  //     (entry) => entry.budgetMonth === month
-  //   );
-  //   if (rawValue > 0) {
-  //     if (entryIndex !== -1) {
-  //       // If the entry exists, update the estimatedBudget
-  //       newArray[rowIndex].entries[entryIndex] = {
-  //         ...newArray[rowIndex].entries[entryIndex],
-  //         estimatedBudget: rawValue,
-  //       };
-  //     } else {
-  //       // If the entry does not exist, create a new one
-  //       const newEntry = {
-  //         budgetMonth: month,
-  //         budgetYear: yearShort,
-  //         componentId: newArray[rowIndex].UUID, // Component ID from the row
-  //         budgetId: null,
-  //         estimatedBudget: rawValue,
-  //       };
-  //       newArray[rowIndex].entries.push(newEntry);
-  //     }
-  //   } else {
-  //     if (entryIndex !== -1) {
-  //       newArray[rowIndex].entries.splice(entryIndex, 1);
-  //     }
-  //   }
-
-  //   setBudgetDataApi(newArray);
-  // };
 
   let totals = calculateTotals(budgetDataApi, months, monthMap, "R");
 
@@ -865,25 +793,6 @@ const BbForm = () => {
                               </div>
                             </td>
                             {/* Currency */}
-                            {/* <td>
-                              <div>
-                                <select
-                                  name="currency"
-                                  value={row.currency}
-                                  onChange={(e) => {
-                                    const newRows = [...budgetDataApi];
-                                    newRows[rowIndex].currency = e.target.value;
-
-                                    setBudgetDataApi(newRows);
-                                  }}
-                                >
-                                  <option value="INR">INR</option>
-                                  <option value="USD">USD</option>
-                                  <option value="EUR">EUR</option>
-                                  <option value="EUR">GBP</option>
-                                </select>
-                              </div>
-                            </td> */}
 
                             {/* Months */}
                             {months.map((monthValue, idx) => (
@@ -910,6 +819,12 @@ const BbForm = () => {
                             <td>
                               <div className="total-row-cal">
                                 <input
+                                  className={
+                                    budgetDataApi[rowIndex]?.budget_total ===
+                                      0 &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
                                   type="text"
                                   value={calculateRowTotal(
                                     row,
