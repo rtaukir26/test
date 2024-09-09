@@ -55,29 +55,29 @@ const BudgetView = () => {
           XLSX.utils.sheet_add_aoa(worksheet, Heading);
           // XLSX.utils.sheet_add_json(worksheet, arr, { origin: 'A2', skipHeader: true });
           // Iterate through columns J, K, L, M
-          // const range = XLSX.utils.decode_range(worksheet["!ref"]); //
-          // const columnsToFormat = ["J", "K", "L", "M"];
-          // const lastRow = range.e.r + 1; // Last row index in the sheet
+          const range = XLSX.utils.decode_range(worksheet["!ref"]); //
+          const columnsToFormat = ["J", "K", "L", "M"];
+          const lastRow = range.e.r + 1; // Last row index in the sheet
 
-          // // Add sum formulas in the row after the data
-          // columnsToFormat.forEach((col) => {
-          //   const sumCell = `${col}${lastRow + 1}`;
-          //   worksheet[sumCell] = {
-          //     t: "n",
-          //     f: `SUM(${col}2:${col}${lastRow})`,
-          //     s: { numFmt: "0.00" },
-          //   }; // Formula for sum
-          // });
+          // Add sum formulas in the row after the data
+          columnsToFormat.forEach((col) => {
+            const sumCell = `${col}${lastRow + 1}`;
+            worksheet[sumCell] = {
+              t: "n",
+              f: `SUM(${col}2:${col}${lastRow})`,
+              s: { numFmt: "0.00" },
+            }; // Formula for sum
+          });
 
-          // // Format cells in columns J, K, L, M as numbers
-          // columnsToFormat.forEach((col) => {
-          //   for (let row = 2; row <= lastRow; row++) {
-          //     // Skip the header row
-          //     const cellAddress = `${col}${row}`;
-          //     if (!worksheet[cellAddress]) worksheet[cellAddress] = {}; // Create cell if it does not exist
-          //     worksheet[cellAddress].t = "n"; // Set cell type to number
-          //   }
-          // });
+          // Format cells in columns J, K, L, M as numbers
+          columnsToFormat.forEach((col) => {
+            for (let row = 2; row <= lastRow; row++) {
+              // Skip the header row
+              const cellAddress = `${col}${row}`;
+              if (!worksheet[cellAddress]) worksheet[cellAddress] = {}; // Create cell if it does not exist
+              worksheet[cellAddress].t = "n"; // Set cell type to number
+            }
+          });
 
           XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
@@ -168,25 +168,25 @@ const BudgetView = () => {
                         title={item.month_1}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.month_1 ? item.month_1 : 0.00}
+                        {item.month_1 ? item.month_1 : 0.0}
                       </td>
                       <td
                         title={item.month_2}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.month_2 ? item.month_2 : 0.00}
+                        {item.month_2 ? item.month_2 : 0.0}
                       </td>
                       <td
                         title={item.month_3}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.month_3 ? item.month_3 : 0.00}
+                        {item.month_3 ? item.month_3 : 0.0}
                       </td>
                       <td
                         title={item.budget_total}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.budget_total ? item.budget_total : 0.00}
+                        {item.budget_total ? item.budget_total : 0.0}
                       </td>
                       <td className="truncate" title={item.remarks}>
                         {item.remarks ? item.remarks : "--"}
