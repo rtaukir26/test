@@ -221,7 +221,7 @@ const BbForm = () => {
     e.preventDefault();
     setIsChildError(true);
     const validated = formValidation(formValues);
-    let isChildDataFilled = budgetDataApi.some((item) => {
+    let isChildDataFilled = budgetDataApi.every((item) => {
       let isValid = true;
       if (!item.budget_type) {
         isValid = false;
@@ -234,17 +234,12 @@ const BbForm = () => {
       }
       return isValid;
     });
+    console.log("isChildDataFilled", isChildDataFilled);
     if (Object.keys(validated)?.length > 0 || !isChildDataFilled) {
       setFormErr(validated);
       //   // toast.dismiss();
       let msg = "Please fill all the mandatory fields.";
-      //   // if (Object.keys(validated)?.length < 2) {
-      //   //   let fieldMsg = Object?.values(validated)
-      //   //     .map((item) => item)
-      //   //     .toString();
-      //   //   // msg = `Please enter the ${fieldName?.split("_").join(" ")} field.`;
-      //   //   msg = fieldMsg;
-      //   // }
+
       toast.error(msg);
     } else {
       setIsSubmit(true);
@@ -501,131 +496,125 @@ const BbForm = () => {
           handleSubmitConfirm={handleConfirmSubmit}
         />
 
-        {isLoader ? (
-          <>
-            <LoaderCommon />
-          </>
-        ) : (
-          <>
-            <form onSubmit={handleSubmit}>
-              <div className="form-div">
-                {/* Region --1 */}
-                <div
-                  className={`field-con form-col-sec select-search-container-section ${
-                    formErr?.region && "field-error"
-                  }`}
-                  // className="field-con form-col-sec select-search-container-section"
-                >
-                  <label className="required">
-                    Region<small className="mandatory-small">*</small>
-                  </label>
-                  <SelectSearch
-                    options={Region2}
-                    value={formValues.region}
-                    onChange={(value) => {
-                      setFormValues((prevValues) => ({
-                        ...prevValues,
-                        region: value,
-                      }));
-                    }}
-                    name="projectType"
-                    placeholder="Select Region"
-                    search={true}
-                  />
-                  <img src={DropdownIcon} alt="dropdown" />
-                </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-div">
+            {/* Region --1 */}
+            <div
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.region && "field-error"
+              }`}
+              // className="field-con form-col-sec select-search-container-section"
+            >
+              <label className="required">
+                Region<small className="mandatory-small">*</small>
+              </label>
+              <SelectSearch
+                options={Region2}
+                value={formValues.region}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    region: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Region"
+                search={true}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
+            </div>
 
-                {/* Business Function --2 */}
-                <div
-                  // className="field-con form-col-sec select-search-container-section"
-                  className={`field-con form-col-sec select-search-container-section ${
-                    formErr?.business_function && "field-error"
-                  }`}
-                >
-                  <label className="required">
-                    Business Function
-                    <small className="mandatory-small">*</small>
-                  </label>
-                  <SelectSearch
-                    options={BusinessFunction}
-                    value={formValues.business_function}
-                    onChange={(value) => {
-                      let d = BusinessFunction.filter(
-                        (item) => item.unitname === value
-                      );
-                      setBusinessName(d);
-                      setFormValues((prevValues) => ({
-                        ...prevValues,
-                        business_function: value,
-                      }));
-                    }}
-                    name="projectType"
-                    placeholder="Select Business Function"
-                    search={true}
-                  />
-                  <img src={DropdownIcon} alt="dropdown" />
-                </div>
+            {/* Business Function --2 */}
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.business_function && "field-error"
+              }`}
+            >
+              <label className="required">
+                Business Function
+                <small className="mandatory-small">*</small>
+              </label>
+              <SelectSearch
+                options={BusinessFunction}
+                value={formValues.business_function}
+                onChange={(value) => {
+                  let d = BusinessFunction.filter(
+                    (item) => item.unitname === value
+                  );
+                  setBusinessName(d);
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    business_function: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Business Function"
+                search={true}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
+            </div>
 
-                {/* Practice Name  --3 */}
-                <div
-                  // className="field-con form-col-sec select-search-container-section"
-                  className={`field-con form-col-sec select-search-container-section ${
-                    formErr?.practice_name && "field-error"
-                  }`}
-                >
-                  <label className="required">
-                    Department/Practice Name
-                    <small className="mandatory-small">*</small>
-                  </label>
-                  <SelectSearch
-                    options={practiceNameApi}
-                    value={formValues.practice_name}
-                    onChange={(value) => {
-                      setFormValues((prevValues) => ({
-                        ...prevValues,
-                        practice_name: value,
-                      }));
-                    }}
-                    name="projectType"
-                    placeholder="Select Department/Practice Name"
-                    search={true}
-                  />
-                  <img src={DropdownIcon} alt="dropdown" />
-                </div>
+            {/* Practice Name  --3 */}
+            <div
+              // className="field-con form-col-sec select-search-container-section"
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.practice_name && "field-error"
+              }`}
+            >
+              <label className="required">
+                Department/Practice Name
+                <small className="mandatory-small">*</small>
+              </label>
+              <SelectSearch
+                options={practiceNameApi}
+                value={formValues.practice_name}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    practice_name: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Department/Practice Name"
+                search={true}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
+            </div>
 
-                {/* Cost Center Owner  --4 */}
-                <div className="field-con">
-                  <label htmlFor="cost_center_owner">
-                    Cost Center Owner
-                    <small className="mandatory-small">*</small>
-                  </label>
-                  <input
-                    className={formErr?.cost_center_owner && "field-error"}
-                    type="text"
-                    autoComplete="off"
-                    name="cost_center_owner"
-                    value={formValues.cost_center_owner}
-                    onChange={handleChange}
-                    placeholder="Enter cost center owner name"
-                  />
-                </div>
+            {/* Cost Center Owner  --4 */}
+            <div className="field-con">
+              <label htmlFor="cost_center_owner">
+                Cost Center Owner
+                <small className="mandatory-small">*</small>
+              </label>
+              <input
+                className={formErr?.cost_center_owner && "field-error"}
+                type="text"
+                autoComplete="off"
+                name="cost_center_owner"
+                value={formValues.cost_center_owner}
+                onChange={handleChange}
+                placeholder="Enter cost center owner name"
+              />
+            </div>
 
-                {/* Project Name  --5 */}
-                <div className="field-con">
-                  <label htmlFor="project_name">Project Name</label>
-                  <input
-                    className={formErr?.project_name && "field-error"}
-                    type="text"
-                    autoComplete="off"
-                    name="project_name"
-                    placeholder="Enter project name"
-                    value={formValues.project_name}
-                    onChange={handleChange}
-                  />
-                </div>
+            {/* Project Name  --5 */}
+            <div className="field-con">
+              <label htmlFor="project_name">Project Name</label>
+              <input
+                className={formErr?.project_name && "field-error"}
+                type="text"
+                autoComplete="off"
+                name="project_name"
+                placeholder="Enter project name"
+                value={formValues.project_name}
+                onChange={handleChange}
+              />
+            </div>
 
-                {/* Customer Type --6 */}
-                {/* <div
+            {/* Customer Type --6 */}
+            {/* <div
               className="field-con form-col-sec select-search-container-section"
               // className={`field-con form-col-sec select-search-container-section ${
               //   formErr?.customer_type && "field-error"
@@ -648,8 +637,8 @@ const BbForm = () => {
               <img src={DropdownIcon} alt="dropdown" />
             </div> */}
 
-                {/* Customer --7 */}
-                {/* {isAddingNew ? (
+            {/* Customer --7 */}
+            {/* {isAddingNew ? (
               <div className="field-con">
                 <label htmlFor="project_name">Customer</label>
                 <span
@@ -715,173 +704,168 @@ const BbForm = () => {
               </div>
             )} */}
 
-                {/* Currency */}
-                <div
-                  className={`field-con form-col-sec select-search-container-section ${
-                    formErr?.currency && "field-error"
-                  }`}
-                >
-                  <label className="required">
-                    Currency<small className="mandatory-small">*</small>
-                  </label>
-                  <SelectSearch
-                    options={CurrencyOption}
-                    value={formValues.currency}
-                    onChange={(value) => {
-                      setFormValues((prevValues) => ({
-                        ...prevValues,
-                        currency: value,
-                      }));
-                    }}
-                    name="projectType"
-                    placeholder="Select Currency"
-                    search={true}
-                    // disabled={projectId && !access?.super_access}
-                  />
-                  <img src={DropdownIcon} alt="dropdown" />
-                </div>
+            {/* Currency */}
+            <div
+              className={`field-con form-col-sec select-search-container-section ${
+                formErr?.currency && "field-error"
+              }`}
+            >
+              <label className="required">
+                Currency<small className="mandatory-small">*</small>
+              </label>
+              <SelectSearch
+                options={CurrencyOption}
+                value={formValues.currency}
+                onChange={(value) => {
+                  setFormValues((prevValues) => ({
+                    ...prevValues,
+                    currency: value,
+                  }));
+                }}
+                name="projectType"
+                placeholder="Select Currency"
+                search={true}
+                // disabled={projectId && !access?.super_access}
+              />
+              <img src={DropdownIcon} alt="dropdown" />
+            </div>
 
-                {/* child component */}
-                <div className="child-con">
-                  <div className="child-body">
-                    <>
-                      <div className="custom-table-con">
-                        <table className="custom-table">
-                          <thead>
-                            <tr className="">
-                              <th className="header-th" colSpan="12">
-                                <div>
-                                  TOTAL Q3 BUDGET:
-                                  <span>
-                                    {/* {decode(currencyIcon(), { level: 'html5' })}
+            {/* child component */}
+            <div className="child-con">
+              <div className="child-body">
+                <>
+                  <div className="custom-table-con">
+                    <table className="custom-table">
+                      <thead>
+                        <tr className="">
+                          <th className="header-th" colSpan="12">
+                            <div>
+                              TOTAL Q3 BUDGET:
+                              <span>
+                                {/* {decode(currencyIcon(), { level: 'html5' })}
                                 {totals
                                   .reduce((acc, curr) => acc + curr.value, 0)
                                   .toFixed(2)} */}
-                                    {`${decode(currencyIcon(), {
-                                      level: "html5",
-                                    })} ${totals
-                                      .reduce(
-                                        (acc, curr) => acc + curr.value,
-                                        0
-                                      )
-                                      .toFixed(2)}`}
-                                  </span>
-                                </div>
-                              </th>
-                            </tr>
-                            <tr>
-                              <th>
-                                Budget Type
-                                <small className="mandatory-small">*</small>
-                              </th>
-                              <th>
-                                Item Description
-                                <small className="mandatory-small">*</small>
-                              </th>
-                              <th>
-                                Cost Center
-                                <small className="mandatory-small">*</small>
-                              </th>
-                              {/* <th>Currency</th> */}
-                              {/* Months - header th */}
-                              {months.map((month) => (
-                                <th>{month}</th>
-                              ))}
+                                {`${decode(currencyIcon(), {
+                                  level: "html5",
+                                })} ${totals
+                                  .reduce((acc, curr) => acc + curr.value, 0)
+                                  .toFixed(2)}`}
+                              </span>
+                            </div>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th>
+                            Budget Type
+                            <small className="mandatory-small">*</small>
+                          </th>
+                          <th>
+                            Item Description
+                            <small className="mandatory-small">*</small>
+                          </th>
+                          <th>
+                            Cost Center
+                            <small className="mandatory-small">*</small>
+                          </th>
+                          {/* <th>Currency</th> */}
+                          {/* Months - header th */}
+                          {months.map((month) => (
+                            <th>{month}</th>
+                          ))}
 
-                              <th>Total</th>
-                              <th>Remarks</th>
-                              <th></th>
-                            </tr>
-                          </thead>
+                          <th>Total</th>
+                          <th>Remarks</th>
+                          <th></th>
+                        </tr>
+                      </thead>
 
-                          <tbody>
-                            {budgetDataApi.map((row, rowIndex) => (
-                              <tr key={rowIndex}>
-                                {/* Budget Type */}
-                                <td>
-                                  <div>
-                                    <select
-                                      style={{ padding: "12px" }}
-                                      value={row.budget_type}
-                                      onChange={(e) => {
-                                        const newRows = [...budgetDataApi];
-                                        newRows[rowIndex].budget_type =
-                                          e.target.value;
+                      <tbody>
+                        {budgetDataApi.map((row, rowIndex) => (
+                          <tr key={rowIndex}>
+                            {/* Budget Type */}
+                            <td>
+                              <div>
+                                <select
+                                  style={{ padding: "12px" }}
+                                  value={row.budget_type}
+                                  onChange={(e) => {
+                                    const newRows = [...budgetDataApi];
+                                    newRows[rowIndex].budget_type =
+                                      e.target.value;
 
-                                        setBudgetDataApi(newRows);
-                                        setIsChildError(false);
-                                      }}
-                                      className={
-                                        !budgetDataApi[rowIndex]?.budget_type &&
-                                        isChildError &&
-                                        "field-error"
-                                      }
-                                    >
-                                      <option value="">--Select--</option>
-                                      <option value="Resources">
-                                        Resources
-                                      </option>
-                                      <option value="Capex">Capex</option>
-                                      <option value="Opex">Opex</option>
-                                      <option value="Travel">Travel</option>
-                                      <option value="Pass Through">
-                                        Pass Through
-                                      </option>
-                                      <option value="others">Others</option>
-                                    </select>
-                                  </div>
-                                </td>
-                                {/* Item Description */}
-                                <td>
-                                  <div>
-                                    <input
-                                      type="text"
-                                      autoComplete="off"
-                                      name="item_description"
-                                      className={
-                                        !budgetDataApi[rowIndex]
-                                          ?.item_description &&
-                                        isChildError &&
-                                        "field-error"
-                                      }
-                                      value={row.item_description}
-                                      onChange={(e) => {
-                                        const newRows = [...budgetDataApi];
-                                        newRows[rowIndex].item_description =
-                                          e.target.value;
+                                    setBudgetDataApi(newRows);
+                                    setIsChildError(false);
+                                  }}
+                                  className={
+                                    !budgetDataApi[rowIndex]?.budget_type &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
+                                >
+                                  <option value="">--Select--</option>
+                                  <option value="Resources">Resources</option>
+                                  <option value="Capex">Capex</option>
+                                  <option value="Opex">Opex</option>
+                                  <option value="Travel">Travel</option>
+                                  <option value="Pass Through">
+                                    Pass Through
+                                  </option>
+                                  <option value="others">Others</option>
+                                </select>
+                              </div>
+                            </td>
+                            {/* Item Description */}
+                            <td>
+                              <div>
+                                <input
+                                  type="text"
+                                  autoComplete="off"
+                                  name="item_description"
+                                  className={
+                                    !budgetDataApi[rowIndex]
+                                      ?.item_description &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
+                                  value={row.item_description}
+                                  onChange={(e) => {
+                                    const newRows = [...budgetDataApi];
+                                    newRows[rowIndex].item_description =
+                                      e.target.value;
 
-                                        setBudgetDataApi(newRows);
-                                        setIsChildError(false);
-                                      }}
-                                    />
-                                  </div>
-                                </td>
-                                {/* Cost Center */}
-                                <td>
-                                  <div>
-                                    <input
-                                      autoComplete="off"
-                                      type="text"
-                                      name="cost_center"
-                                      className={
-                                        !budgetDataApi[rowIndex]?.cost_center &&
-                                        isChildError &&
-                                        "field-error"
-                                      }
-                                      value={row.cost_center}
-                                      onChange={(e) => {
-                                        const newRows = [...budgetDataApi];
-                                        newRows[rowIndex].cost_center =
-                                          e.target.value;
+                                    setBudgetDataApi(newRows);
+                                    setIsChildError(false);
+                                  }}
+                                />
+                              </div>
+                            </td>
+                            {/* Cost Center */}
+                            <td>
+                              <div>
+                                <input
+                                  autoComplete="off"
+                                  type="text"
+                                  name="cost_center"
+                                  className={
+                                    !budgetDataApi[rowIndex]?.cost_center &&
+                                    isChildError &&
+                                    "field-error"
+                                  }
+                                  value={row.cost_center}
+                                  onChange={(e) => {
+                                    const newRows = [...budgetDataApi];
+                                    newRows[rowIndex].cost_center =
+                                      e.target.value;
 
-                                        setBudgetDataApi(newRows);
-                                        setIsChildError(false);
-                                      }}
-                                    />
-                                  </div>
-                                </td>
-                                {/* Currency */}
-                                {/* <td>
+                                    setBudgetDataApi(newRows);
+                                    setIsChildError(false);
+                                  }}
+                                />
+                              </div>
+                            </td>
+                            {/* Currency */}
+                            {/* <td>
                               <div>
                                 <select
                                   name="currency"
@@ -901,124 +885,117 @@ const BbForm = () => {
                               </div>
                             </td> */}
 
-                                {/* Months */}
-                                {months.map((monthValue, idx) => (
-                                  <td key={idx}>
-                                    <div className="month-td-div">
-                                      <input
-                                        autoComplete="off"
-                                        type="number"
-                                        value={getMonthValue(
-                                          row,
-                                          monthValue,
-                                          idx
-                                        )}
-                                        onChange={(e) =>
-                                          handleMonthChange(
-                                            e,
-                                            monthValue,
-                                            rowIndex,
-                                            idx,
-                                            "estimateBudget"
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  </td>
-                                ))}
-                                {/* Total Row values */}
-                                <td>
-                                  <div className="total-row-cal">
-                                    <input
-                                      type="text"
-                                      value={calculateRowTotal(
-                                        row,
+                            {/* Months */}
+                            {months.map((monthValue, idx) => (
+                              <td key={idx}>
+                                <div className="month-td-div">
+                                  <input
+                                    autoComplete="off"
+                                    type="number"
+                                    value={getMonthValue(row, monthValue, idx)}
+                                    onChange={(e) =>
+                                      handleMonthChange(
+                                        e,
+                                        monthValue,
+                                        rowIndex,
+                                        idx,
                                         "estimateBudget"
-                                      )}
-                                      readOnly
-                                    />
-                                  </div>
-                                </td>
-
-                                {/* Remarks */}
-                                <td>
-                                  <div className="">
-                                    <input
-                                      type="text"
-                                      name="remarks"
-                                      value={row.remarks}
-                                      onChange={(e) => {
-                                        const newRows = [...budgetDataApi];
-                                        newRows[rowIndex].remarks =
-                                          e.target.value;
-
-                                        setBudgetDataApi(newRows);
-                                      }}
-                                    />
-                                  </div>
-                                </td>
-                                {/* Delete Icon */}
-                                <td className="delete-row">
-                                  <img
-                                    className={
-                                      budgetDataApi.length < 2 &&
-                                      "delete-icon-disable"
+                                      )
                                     }
-                                    onClick={() =>
-                                      budgetDataApi.length > 1
-                                        ? handleDeleteRow(rowIndex)
-                                        : null
-                                    }
-                                    src={deleteIcon}
-                                    alt="delete"
                                   />
-                                </td>
-                              </tr>
+                                </div>
+                              </td>
                             ))}
+                            {/* Total Row values */}
+                            <td>
+                              <div className="total-row-cal">
+                                <input
+                                  type="text"
+                                  value={calculateRowTotal(
+                                    row,
+                                    "estimateBudget"
+                                  )}
+                                  readOnly
+                                />
+                              </div>
+                            </td>
 
-                            <tr>
-                              <td colSpan="12">
-                                <div className="btn-grp">
-                                  <button type="button" onClick={handleAddMore}>
-                                    Add More
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                            {/* Planned Total */}
-                            <tr className="total-month-tr">
-                              <td colSpan="3">
-                                <div className="total-month-div">
-                                  Total per month
-                                </div>
-                              </td>
-                              {totals.map((total, index) => (
-                                <td style={{ textAlign: "end" }} key={index}>
-                                  {total.value.toFixed(2)}
-                                </td> // Format to two decimal places
-                              ))}
-                              <td style={{ textAlign: "end" }}>
-                                {totals
-                                  .reduce((acc, curr) => acc + curr.value, 0)
-                                  .toFixed(2)}
-                              </td>
-                              <td></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </>
+                            {/* Remarks */}
+                            <td>
+                              <div className="">
+                                <input
+                                  type="text"
+                                  name="remarks"
+                                  value={row.remarks}
+                                  onChange={(e) => {
+                                    const newRows = [...budgetDataApi];
+                                    newRows[rowIndex].remarks = e.target.value;
+
+                                    setBudgetDataApi(newRows);
+                                  }}
+                                />
+                              </div>
+                            </td>
+                            {/* Delete Icon */}
+                            <td className="delete-row">
+                              <img
+                                className={
+                                  budgetDataApi.length < 2 &&
+                                  "delete-icon-disable"
+                                }
+                                onClick={() =>
+                                  budgetDataApi.length > 1
+                                    ? handleDeleteRow(rowIndex)
+                                    : null
+                                }
+                                src={deleteIcon}
+                                alt="delete"
+                              />
+                            </td>
+                          </tr>
+                        ))}
+
+                        <tr>
+                          <td colSpan="12">
+                            <div className="btn-grp">
+                              <button type="button" onClick={handleAddMore}>
+                                Add More
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        {/* Planned Total */}
+                        <tr className="total-month-tr">
+                          <td colSpan="3">
+                            <div className="total-month-div">
+                              Total per month
+                            </div>
+                          </td>
+                          {totals.map((total, index) => (
+                            <td style={{ textAlign: "end" }} key={index}>
+                              {total.value.toFixed(2)}
+                            </td> // Format to two decimal places
+                          ))}
+                          <td style={{ textAlign: "end" }}>
+                            {totals
+                              .reduce((acc, curr) => acc + curr.value, 0)
+                              .toFixed(2)}
+                          </td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                </div>
+                </>
               </div>
-              <div className="btn-submit-con">
-                <button className="btn-submit" type="submit">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </>
-        )}
+            </div>
+          </div>
+          <div className="btn-submit-con">
+            <button className="btn-submit" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
