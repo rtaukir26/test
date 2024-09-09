@@ -152,6 +152,15 @@ const BbForm = () => {
             obj["value"] = obj["deptname"];
             return obj;
           });
+          if (practiceDetails.length < 1) {
+            practiceDetails = [
+              {
+                name: "Not Applicable",
+                value: "Not Applicable",
+                label: "Not Applicable",
+              },
+            ];
+          }
           setPracticeApiData(practiceDetails);
         }
       })
@@ -247,7 +256,10 @@ const BbForm = () => {
         if (res.status === 200) {
           console.log("res", res);
           toast.success("Form has been submitted successfully");
-          navigate(routePath.budgetView);
+
+          setTimeout(() => {
+            navigate(routePath.budgetView);
+          }, 2000);
         } else {
           toast.error("something went wrong");
         }
@@ -264,29 +276,117 @@ const BbForm = () => {
   };
 
   //hanlde month change
+  // const handleMonthChange = (e, monthValue, rowIndex, idx, isActual) => {
+  //   const newArray = [...budgetDataApi];
+  //   if (!newArray[rowIndex]) {
+  //     console.error(`Row index ${rowIndex} is out of bounds in newArray.`);
+  //     return;
+  //   }
+  //   // Convert the input value to a number
+  //   let newValue = parseFloat(e.target.value) || 0;
+  //   // -----------------
+  //   // const onlyNums = e.target.value.replace(/[^0-9.]/g, "");
+  //   // Format the value as currency
+  //   // const formattedValue = new Intl.NumberFormat("en-IN", {
+  //   //   style: "currency",
+  //   //   currency: "INR",
+  //   //   maximumFractionDigits: 2,
+  //   // }).format(onlyNums);
+
+  //   // console.log("formattedValue", formattedValue);
+
+  //   if (idx === 0) {
+  //     newArray[rowIndex].month_1 = newValue;
+  //   }
+  //   if (idx === 1) {
+  //     newArray[rowIndex].month_2 = newValue;
+  //   }
+  //   if (idx === 2) {
+  //     newArray[rowIndex].month_3 = newValue;
+  //   }
+  //   const total =
+  //     (parseFloat(newArray[rowIndex].month_1) || 0) +
+  //     (parseFloat(newArray[rowIndex].month_2) || 0) +
+  //     (parseFloat(newArray[rowIndex].month_3) || 0);
+  //   newArray[rowIndex].budget_total = total;
+
+  //   // -----------------
+
+  //   let monthName = monthValue?.split("-")[0]; //"Jan,Feb",..
+  //   const monthNumber = monthMap[monthName]; //"04","05",..
+
+  //   const month = monthNumber.toString();
+  //   const yearShort = monthValue?.split("-")[1]; // "2024"
+
+  //   // Find the index of the entry to update or remove
+  //   const entryIndex = newArray[rowIndex]?.entries?.findIndex(
+  //     // (entry) => entry.budgetMonth === month && entry.budgetYear === yearShort
+  //     (entry) => entry.budgetMonth === month
+  //   );
+  //   if (newValue > 0) {
+  //     if (entryIndex !== -1) {
+  //       // If the entry exists, update the estimatedBudget
+  //       newArray[rowIndex].entries[entryIndex] = {
+  //         ...newArray[rowIndex].entries[entryIndex],
+  //         estimatedBudget: newValue,
+  //       };
+  //     } else {
+  //       // If the entry does not exist, create a new one
+  //       const newEntry = {
+  //         budgetMonth: month,
+  //         budgetYear: yearShort,
+  //         componentId: newArray[rowIndex].UUID, // Component ID from the row
+  //         budgetId: null,
+  //         estimatedBudget: newValue,
+  //       };
+  //       newArray[rowIndex].entries.push(newEntry);
+  //     }
+  //   } else {
+  //     if (entryIndex !== -1) {
+  //       newArray[rowIndex].entries.splice(entryIndex, 1);
+  //     }
+  //   }
+  //   setBudgetDataApi(newArray);
+  // };
   const handleMonthChange = (e, monthValue, rowIndex, idx, isActual) => {
     const newArray = [...budgetDataApi];
     if (!newArray[rowIndex]) {
       console.error(`Row index ${rowIndex} is out of bounds in newArray.`);
       return;
     }
+
     // Convert the input value to a number
-    const newValue = parseFloat(e.target.value) || 0;
-    // -----------------
+    let rawValue = parseFloat(e.target.value) || 0;
+    // Format the value as currency for display purposes
+    const formattedValue = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2,
+    }).format(rawValue);
+    console.log("formattedValue", formattedValue);
+    // Update the array with the formatted value for display
     if (idx === 0) {
-      newArray[rowIndex].month_1 = newValue;
+      newArray[rowIndex].month_1 = formattedValue;
     }
     if (idx === 1) {
-      newArray[rowIndex].month_2 = newValue;
+      newArray[rowIndex].month_2 = formattedValue;
     }
     if (idx === 2) {
-      newArray[rowIndex].month_3 = newValue;
+      newArray[rowIndex].month_3 = formattedValue;
     }
+
+    // Calculate total using raw values
     const total =
-      (parseFloat(newArray[rowIndex].month_1) || 0) +
-      (parseFloat(newArray[rowIndex].month_2) || 0) +
-      (parseFloat(newArray[rowIndex].month_3) || 0);
-    newArray[rowIndex].budget_total = total;
+      (parseFloat(newArray[rowIndex].month_1?.replace(/[^0-9.-]/g, "")) || 0) +
+      (parseFloat(newArray[rowIndex].month_2?.replace(/[^0-9.-]/g, "")) || 0) +
+      (parseFloat(newArray[rowIndex].month_3?.replace(/[^0-9.-]/g, "")) || 0);
+
+    // Format total as currency for display
+    newArray[rowIndex].budget_total = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2,
+    }).format(total);
 
     // -----------------
 
@@ -298,15 +398,14 @@ const BbForm = () => {
 
     // Find the index of the entry to update or remove
     const entryIndex = newArray[rowIndex]?.entries?.findIndex(
-      // (entry) => entry.budgetMonth === month && entry.budgetYear === yearShort
       (entry) => entry.budgetMonth === month
     );
-    if (newValue > 0) {
+    if (rawValue > 0) {
       if (entryIndex !== -1) {
         // If the entry exists, update the estimatedBudget
         newArray[rowIndex].entries[entryIndex] = {
           ...newArray[rowIndex].entries[entryIndex],
-          estimatedBudget: newValue,
+          estimatedBudget: rawValue,
         };
       } else {
         // If the entry does not exist, create a new one
@@ -315,7 +414,7 @@ const BbForm = () => {
           budgetYear: yearShort,
           componentId: newArray[rowIndex].UUID, // Component ID from the row
           budgetId: null,
-          estimatedBudget: newValue,
+          estimatedBudget: rawValue,
         };
         newArray[rowIndex].entries.push(newEntry);
       }
@@ -324,6 +423,7 @@ const BbForm = () => {
         newArray[rowIndex].entries.splice(entryIndex, 1);
       }
     }
+
     setBudgetDataApi(newArray);
   };
 
@@ -486,6 +586,7 @@ const BbForm = () => {
               <input
                 className={formErr?.cost_center_owner && "field-error"}
                 type="text"
+                autoComplete="off"
                 name="cost_center_owner"
                 value={formValues.cost_center_owner}
                 onChange={handleChange}
@@ -499,6 +600,7 @@ const BbForm = () => {
               <input
                 className={formErr?.project_name && "field-error"}
                 type="text"
+                autoComplete="off"
                 name="project_name"
                 placeholder="Enter project name"
                 value={formValues.project_name}
@@ -713,6 +815,7 @@ const BbForm = () => {
                               <div>
                                 <input
                                   type="text"
+                                  autoComplete="off"
                                   name="item_description"
                                   className={
                                     !budgetDataApi[rowIndex]
@@ -736,6 +839,7 @@ const BbForm = () => {
                             <td>
                               <div>
                                 <input
+                                  autoComplete="off"
                                   type="text"
                                   name="cost_center"
                                   className={
@@ -781,6 +885,7 @@ const BbForm = () => {
                               <td key={idx}>
                                 <div className="month-td-div">
                                   <input
+                                    autoComplete="off"
                                     type="number"
                                     value={getMonthValue(row, monthValue, idx)}
                                     onChange={(e) =>
@@ -863,7 +968,7 @@ const BbForm = () => {
                           </td>
                           {totals.map((total, index) => (
                             <td style={{ textAlign: "end" }} key={index}>
-                              {total.value}
+                              {total.value.toFixed(2)}
                             </td> // Format to two decimal places
                           ))}
                           <td style={{ textAlign: "end" }}>
@@ -876,55 +981,8 @@ const BbForm = () => {
                       </tbody>
                     </table>
                   </div>
-                  {/* <div className="total-budget">
-                    <span>TOTAL Q3 BUDGET:</span>
-                    <span>&#8377;&nbsp;10</span>
-                    <span>----</span>
-                  </div>
-                  {budgetData?.map((row, i) => (
-                    <div className="row-data" key={i}>
-                      {row.rowData.map((item, idx) => (
-                        <>
-                          <div className="select-filed" title={item.label}>
-                            <label htmlFor="">{item.label}</label>
-                            <input
-                              type="text"
-                              name={`val${idx}`}
-                              value={budgetData.value}
-                              placeholder="write.."
-                              onChange={handleChangeInput}
-                            />
-                          </div>
-                        </>
-                      ))}
-                      {budgetData.length > 1 && (
-                        <div className="btn-delete">
-                          <img
-                            onClick={() => handleDeleteRow(row.id)}
-                            src={deleteIcon}
-                            alt="delete"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  <div className="total-row-calc">
-                    <span>Total</span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span>0</span>
-                    <span>0</span>
-                    <span>0</span>
-                    <span>0</span>
-                  </div> */}
                 </>
               </div>
-              {/* <div className="btn-grp">
-                <button type="button" onClick={handleAddMore}>
-                  Add More
-                </button>
-              </div> */}
             </div>
           </div>
           <div className="btn-submit-con">

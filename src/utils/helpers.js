@@ -16,16 +16,16 @@ export const monthMap = {
 export const getMonthValue = (row, monthValue, idx) => {
   let month = monthValue.split("-")[0]; //"Jan-24",... ---> "Jan"
   const monthNumber = monthMap[month]; //"01","02",..
-  let value = 0;
-  value = row.entries?.filter((item) => {
+  let val = 0;
+  row.entries?.filter((item) => {
     if (item?.budgetMonth === monthNumber?.toString()) {
-      return item;
+      val = parseFloat(item.estimatedBudget);
+      // return item;
     }
   });
 
-  console.log("value", value);
-
-  return value[0]?.estimatedBudget;
+  // return value[0]?.estimatedBudget;
+  return val;
 };
 
 export const calculateRowTotal = (row, isActual) => {
@@ -35,7 +35,6 @@ export const calculateRowTotal = (row, isActual) => {
 
     0
   );
-
 };
 export const calculateTotals = (data, months, commonMonthMap, tabName) => {
   let totalHour = 160; //20 days * 8 hours = 160 Hour Rate

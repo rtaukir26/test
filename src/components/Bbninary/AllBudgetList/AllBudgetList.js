@@ -35,29 +35,77 @@ const AllBudgetList = () => {
       .catch((err) => {
         setIsLoader(false);
       });
-    getReportListExport()
-      .then((res) => {
-        if (res.status === 200 && res.data)
-          setReportListExportData(res.data.tickets);
-      })
-      .catch((err) => err);
+    // getReportListExport()
+    //   .then((res) => {
+    //     if (res.status === 200 && res.data)
+    //       setReportListExportData(res.data.tickets);
+    //   })
+    //   .catch((err) => err);
   }, []);
 
   //download data as exel
+  // const exportBudgetSheet = (e) => {
+  //   let Heading = [["Region", "Business Function"]];
+  //   const workbook = XLSX.utils.book_new();
+  //   const worksheet = XLSX.utils.json_to_sheet(reportListExportData);
+  //   XLSX.utils.sheet_add_aoa(worksheet, Heading);
+  //   // XLSX.utils.sheet_add_aoa(worksheet);
+  //   // XLSX.utils.sheet_add_json(worksheet, arr, { origin: 'A2', skipHeader: true });
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  //   XLSX.writeFile(
+  //     workbook,
+  //     "BB-Budget-Report-" +
+  //       moment(new Date()).format("YYYY-MM-DD-HH-mm-ss") +
+  //       ".xlsx"
+  //   );
+  // };
+
   const exportBudgetSheet = (e) => {
-    let Heading = [["Region", "Business Function"]];
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(reportListExportData);
-    XLSX.utils.sheet_add_aoa(worksheet, Heading);
-    // XLSX.utils.sheet_add_aoa(worksheet);
-    // XLSX.utils.sheet_add_json(worksheet, arr, { origin: 'A2', skipHeader: true });
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(
-      workbook,
-      "BB-Budget-Report-" +
-        moment(new Date()).format("YYYY-MM-DD-HH-mm-ss") +
-        ".xlsx"
-    );
+    setIsLoader(true);
+    getReportListExport()
+      .then((res) => {
+        if (res.status === 200 && res.data) {
+          let Heading = [["Region", "Business Function"]];
+          const workbook = XLSX.utils.book_new();
+          const worksheet = XLSX.utils.json_to_sheet(res.data.tickets);
+          XLSX.utils.sheet_add_aoa(worksheet, Heading);
+          const range = XLSX.utils.decode_range(worksheet["!ref"]); //
+          const columnsToFormat = ["J", "K", "L", "M"];
+          const lastRow = range.e.r + 1; // Last row index in the sheet
+
+          // Add sum formulas in the row after the data
+          columnsToFormat.forEach((col) => {
+            const sumCell = `${col}${lastRow + 1}`;
+            worksheet[sumCell] = {
+              t: "n",
+              f: `SUM(${col}2:${col}${lastRow})`,
+              s: { numFmt: "0.00" },
+            }; // Formula for sum
+          });
+
+          // Format cells in columns J, K, L, M as numbers
+          columnsToFormat.forEach((col) => {
+            for (let row = 2; row <= lastRow; row++) {
+              // Skip the header row
+              const cellAddress = `${col}${row}`;
+              if (!worksheet[cellAddress]) worksheet[cellAddress] = {}; // Create cell if it does not exist
+              worksheet[cellAddress].t = "n"; // Set cell type to number
+            }
+          });
+
+          XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+          XLSX.writeFile(
+            workbook,
+            "BB-Budget-Report-" +
+              moment(new Date()).format("YYYY-MM-DD-HH-mm-ss") +
+              ".xlsx"
+          );
+        }
+      })
+      .catch((err) => {
+        setIsLoader(false);
+        toast.error("Network Error");
+      });
   };
   return (
     <div className="budget-view-main">
@@ -98,6 +146,68 @@ const AllBudgetList = () => {
                 </thead>
                 <tbody>
                   {budgetListApi?.map((item, i) => (
+                    // <tr>
+                    //   <td title={item.region}>
+                    //     {item.region ? item.region : "--"}
+                    //   </td>
+                    //   <td title={item.business_function} className="truncate">
+                    //     {item.business_function ? item.business_function : "--"}
+                    //   </td>
+                    //   <td title={item.practice_name}>
+                    //     {item.practice_name ? item.practice_name : "--"}
+                    //   </td>
+                    //   <td title={item.cost_center_owner}>
+                    //     {item.cost_center_owner ? item.cost_center_owner : "--"}
+                    //   </td>
+                    //   <td title={item.project_name}>
+                    //     {item.project_name ? item.project_name : "--"}
+                    //   </td>
+                    //   {/* <td title={item.customer_type} className="truncate">
+                    //     {item.customer_type}
+                    //   </td> */}
+                    //   {/* <td title={item.customer} className="truncate">
+                    //     {item.customer}
+                    //   </td> */}
+                    //   <td title={item.budget_type}>
+                    //     {item.budget_type ? item.budget_type : "--"}
+                    //   </td>
+                    //   <td title={item.cost_center}>
+                    //     {item.cost_center ? item.cost_center : "--"}
+                    //   </td>
+                    //   <td title={item.item_description}>
+                    //     {item.item_description ? item.item_description : "--"}
+                    //   </td>
+                    //   <td title={item.currency}>
+                    //     {item.currency ? item.currency : "--"}
+                    //   </td>
+                    //   <td
+                    //     title={item.month_1}
+                    //     style={{ textAlign: "right", paddingRight: "10px" }}
+                    //   >
+                    //     {item.month_1 ? item.month_1 : "--"}
+                    //   </td>
+                    //   <td
+                    //     title={item.month_2}
+                    //     style={{ textAlign: "right", paddingRight: "10px" }}
+                    //   >
+                    //     {item.month_2 ? item.month_2 : "--"}
+                    //   </td>
+                    //   <td
+                    //     title={item.month_3}
+                    //     style={{ textAlign: "right", paddingRight: "10px" }}
+                    //   >
+                    //     {item.month_3 ? item.month_3 : "--"}
+                    //   </td>
+                    //   <td
+                    //     title={item.budget_total}
+                    //     style={{ textAlign: "right", paddingRight: "10px" }}
+                    //   >
+                    //     {item.budget_total ? item.budget_total : "--"}
+                    //   </td>
+                    //   <td title={item.remarks}>
+                    //     {item.remarks ? item.remarks : "--"}
+                    //   </td>
+                    // </tr>
                     <tr>
                       <td title={item.region}>
                         {item.region ? item.region : "--"}
@@ -114,12 +224,7 @@ const AllBudgetList = () => {
                       <td title={item.project_name}>
                         {item.project_name ? item.project_name : "--"}
                       </td>
-                      {/* <td title={item.customer_type} className="truncate">
-                        {item.customer_type}
-                      </td> */}
-                      {/* <td title={item.customer} className="truncate">
-                        {item.customer}
-                      </td> */}
+
                       <td title={item.budget_type}>
                         {item.budget_type ? item.budget_type : "--"}
                       </td>
@@ -132,19 +237,31 @@ const AllBudgetList = () => {
                       <td title={item.currency}>
                         {item.currency ? item.currency : "--"}
                       </td>
-                      <td title={item.month_1}>
-                        {item.month_1 ? item.month_1 : "--"}
+                      <td
+                        title={item.month_1}
+                        style={{ textAlign: "right", paddingRight: "10px" }}
+                      >
+                        {item.month_1 ? item.month_1 : 0.00}
                       </td>
-                      <td title={item.month_2}>
-                        {item.month_2 ? item.month_2 : "--"}
+                      <td
+                        title={item.month_2}
+                        style={{ textAlign: "right", paddingRight: "10px" }}
+                      >
+                        {item.month_2 ? item.month_2 : 0.00}
                       </td>
-                      <td title={item.month_3}>
-                        {item.month_3 ? item.month_3 : "--"}
+                      <td
+                        title={item.month_3}
+                        style={{ textAlign: "right", paddingRight: "10px" }}
+                      >
+                        {item.month_3 ? item.month_3 : 0.00}
                       </td>
-                      <td title={item.budget_total}>
-                        {item.budget_total ? item.budget_total : "--"}
+                      <td
+                        title={item.budget_total}
+                        style={{ textAlign: "right", paddingRight: "10px" }}
+                      >
+                        {item.budget_total ? item.budget_total : 0.00}
                       </td>
-                      <td title={item.remarks}>
+                      <td className="truncate" title={item.remarks}>
                         {item.remarks ? item.remarks : "--"}
                       </td>
                     </tr>
