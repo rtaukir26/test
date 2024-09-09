@@ -69,29 +69,29 @@ const AllBudgetList = () => {
           const workbook = XLSX.utils.book_new();
           const worksheet = XLSX.utils.json_to_sheet(res.data.tickets);
           XLSX.utils.sheet_add_aoa(worksheet, Heading);
-          const range = XLSX.utils.decode_range(worksheet["!ref"]); //
-          const columnsToFormat = ["J", "K", "L", "M"];
-          const lastRow = range.e.r + 1; // Last row index in the sheet
+          // const range = XLSX.utils.decode_range(worksheet["!ref"]); //
+          // const columnsToFormat = ["J", "K", "L", "M"];
+          // const lastRow = range.e.r + 1; // Last row index in the sheet
 
-          // Add sum formulas in the row after the data
-          columnsToFormat.forEach((col) => {
-            const sumCell = `${col}${lastRow + 1}`;
-            worksheet[sumCell] = {
-              t: "n",
-              f: `SUM(${col}2:${col}${lastRow})`,
-              s: { numFmt: "0.00" },
-            }; // Formula for sum
-          });
+          // // Add sum formulas in the row after the data
+          // columnsToFormat.forEach((col) => {
+          //   const sumCell = `${col}${lastRow + 1}`;
+          //   worksheet[sumCell] = {
+          //     t: "n",
+          //     f: `SUM(${col}2:${col}${lastRow})`,
+          //     s: { numFmt: "0.00" },
+          //   }; // Formula for sum
+          // });
 
-          // Format cells in columns J, K, L, M as numbers
-          columnsToFormat.forEach((col) => {
-            for (let row = 2; row <= lastRow; row++) {
-              // Skip the header row
-              const cellAddress = `${col}${row}`;
-              if (!worksheet[cellAddress]) worksheet[cellAddress] = {}; // Create cell if it does not exist
-              worksheet[cellAddress].t = "n"; // Set cell type to number
-            }
-          });
+          // // Format cells in columns J, K, L, M as numbers
+          // columnsToFormat.forEach((col) => {
+          //   for (let row = 2; row <= lastRow; row++) {
+          //     // Skip the header row
+          //     const cellAddress = `${col}${row}`;
+          //     if (!worksheet[cellAddress]) worksheet[cellAddress] = {}; // Create cell if it does not exist
+          //     worksheet[cellAddress].t = "n"; // Set cell type to number
+          //   }
+          // });
 
           XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
           XLSX.writeFile(
