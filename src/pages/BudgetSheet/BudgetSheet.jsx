@@ -22,12 +22,14 @@ import { useNavigate } from "react-router-dom";
 import routePath from "../../routes/routePath";
 import { decode } from "html-entities";
 import ConfirmPopup from "../../components/SubmitPopup/SubmitPopup/ConfirmPopup";
+import FullpageLoader from "../../components/FullPageLoader/FullPageLoader";
 
 const BudgetSheet = () => {
   const navigate = useNavigate();
   const [isSubmit, setIsSubmit] = useState(false);
   const [isChildError, setIsChildError] = useState(false);
   const [formErr, setFormErr] = useState();
+  const [loader, setLoader] = useState(false);
 
   const months = ["Oct-24", "Nov-24", "Dec-24"];
 
@@ -207,7 +209,7 @@ const BudgetSheet = () => {
     setBudgetDataApi([...budgetDataApi, template]);
   };
 
-  // Form submit handler - popup
+  // Form submit handler - open popup
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsChildError(true);
@@ -243,28 +245,31 @@ const BudgetSheet = () => {
 
   //popup OK button
   const handleConfirmSubmit = () => {
+    setLoader(true);
     let updateTotal = budgetDataApi.map((item) => {
       delete item.entries;
       return item;
     });
     let postData = { ...formValues, child: updateTotal };
+    console.log("postData", postData);
+
     saveBudgetData(postData)
       .then((res) => {
         if (res.status === 200) {
           toast.success("Form has been submitted successfully");
-
           setTimeout(() => {
+            setLoader(false);
             navigate(routePath.budgetView);
-          }, 1500);
+          }, 1000);
         } else {
           toast.error("Something went wrong");
+          setLoader(false);
         }
-        console.log("res", res);
       })
       .catch((err) => {
         toast.error("Network Error");
+        setLoader(false);
       });
-    console.log("postData", postData);
     setIsSubmit(false);
   };
 
@@ -357,6 +362,7 @@ const BudgetSheet = () => {
               handleCancel={setIsSubmit}
               handleSubmitConfirm={handleConfirmSubmit}
             />
+            <FullpageLoader isOpen={loader} />
 
             <form onSubmit={handleSubmit}>
               <div className="form-div">
@@ -504,7 +510,6 @@ const BudgetSheet = () => {
                     <>
                       <div className="custom-table-con">
                         <table className="custom-table">
-                          
                           <thead>
                             <tr className="">
                               <th className="header-th" colSpan="12">

@@ -1,0 +1,20 @@
+.ReactModal__Content {
+  background: #e2f2ff !important;
+}
+.full-page-loader {
+  width: 600px;
+  z-index: 999;
+  padding: 20px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 30px;
+    margin-right: 10px;
+    // filter: invert(1);
+  }
+  span {
+    color: $text-color;
+  }
+}

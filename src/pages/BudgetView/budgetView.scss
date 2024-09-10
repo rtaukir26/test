@@ -8,32 +8,41 @@
     width: 100%;
     overflow: auto;
     .download-btn {
+      // display: flex;
+      // justify-content: start;
+      // margin-bottom: 10px;
+      // padding-right: 20px;
       display: flex;
       justify-content: start;
-      margin-bottom: 10px;
-      padding-right: 20px;
+      position: fixed;
+      // right: 30px;
       img {
         width: 24px;
         margin-right: 6px;
       }
       button {
         background: linear-gradient(45deg, #e6e6ff, #b3d8e9);
-        padding: 5px 10px;
-        width: 150px;
+        padding: 7px 20px;
         border-radius: 100px;
         border: none;
+        transition: all 0.2s linear;
+        width: 140px;
+        &:hover {
+          box-shadow: 0px 5px 4px #ffffff4f;
+        }
       }
     }
     .custom-table {
       color: $main-white;
+      margin-top: 55px;
       thead {
         tr {
-          background: #7e55cfad;
+          background: #15023cad;
           border-radius: 5px;
           th {
             text-align: center;
-            padding: 15px 5px;
-            border-right: 1px solid #8068d9;
+            padding: 15px;
+            border-right: 1px solid #3a216bad;
 
             text-overflow: ellipsis;
             overflow: hidden;
@@ -51,10 +60,11 @@
           background-color: #50494934; /* Background color for even rows */
         }
         tr {
+          height: 70px;
           font-size: 14px;
           td {
-            padding: 15px 0px;
-            text-align: left;
+            // padding: 15px 0px;
+            // text-align: left;
             padding-left: 10px;
           }
         }

@@ -12,10 +12,7 @@ import LoaderCommon from "../../components/LoaderCommon/LoaderCommon";
 
 const BudgetView = () => {
   const [budgetListApi, setBudgetList] = useState([]);
-  const [budgetListExportData, setBudgetListExportData] = useState([]);
   const [isloader, setIsLoader] = useState(true);
-  console.log("budgetListApi", budgetListApi);
-  // console.log("budgetListExportData", budgetListExportData);
 
   useEffect(() => {
     getBudgetList()
@@ -23,7 +20,6 @@ const BudgetView = () => {
         setIsLoader(true);
         if (res.statusCode === 200 || (res.status === 200 && res.data)) {
           setIsLoader(false);
-         
 
           setBudgetList(res.data.viewData);
         } else {
@@ -77,7 +73,7 @@ const BudgetView = () => {
 
           XLSX.writeFile(
             workbook,
-            "BB-Budget-Report-" +
+            "BB-My-Budget-Report-" +
               moment(new Date()).format("YYYY-MM-DD-HH-mm-ss") +
               ".xlsx"
           );
@@ -97,7 +93,7 @@ const BudgetView = () => {
           {budgetListApi?.length > 0 ? (
             <>
               <div className="download-btn">
-                <button onClick={exportBudgetSheet}>
+                <button title="Export Report" onClick={exportBudgetSheet}>
                   <img
                     onClick={exportBudgetSheet}
                     src={downloadIcon}
@@ -133,10 +129,10 @@ const BudgetView = () => {
                       <td title={item.region}>
                         {item.region ? item.region : "--"}
                       </td>
-                      <td title={item.business_function} className="truncate">
+                      <td title={item.business_function} className="truncatee">
                         {item.business_function ? item.business_function : "--"}
                       </td>
-                      <td title={item.practice_name}>
+                      <td title={item.practice_name} className="truncatee">
                         {item.practice_name ? item.practice_name : "--"}
                       </td>
                       <td title={item.cost_center_owner}>

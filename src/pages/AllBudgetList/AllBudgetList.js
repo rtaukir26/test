@@ -14,9 +14,7 @@ import LoaderCommon from "../../components/LoaderCommon/LoaderCommon";
 
 const AllBudgetList = () => {
   const [budgetListApi, setBudgetList] = useState([]);
-  const [reportListExportData, setReportListExportData] = useState([]);
   const [isloader, setIsLoader] = useState(true);
-  console.log("budgetListApi", budgetListApi);
 
   useEffect(() => {
     getReportList()
@@ -90,7 +88,7 @@ const AllBudgetList = () => {
           {budgetListApi?.length > 0 ? (
             <>
               <div className="download-btn">
-                <button onClick={exportBudgetSheet}>
+                <button title="Export Report" onClick={exportBudgetSheet}>
                   <img
                     onClick={exportBudgetSheet}
                     src={downloadIcon}

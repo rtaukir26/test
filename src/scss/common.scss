@@ -73,7 +73,8 @@ span {
   background: hsla(0, 0%, 100%, 0.22);
   -webkit-backdrop-filter: blur(0);
   backdrop-filter: blur(0);
-  width: calc(100% - 230px);
+  // width: calc(100% - 230px);
+  width: 85%;
   position: relative;
   border-radius: 30px;
   box-shadow: -30px -10px 40px rgba(0, 0, 0, 0.12);
@@ -113,8 +114,8 @@ span {
   }
 }
 .truncate {
-  // display: inline-block;
-  // width: 100px;
+  // display: block;
+  // width: 200px;
   color: #fff;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -171,7 +172,9 @@ input[type="number"] {
     transform: rotate(360deg);
   }
 }
-
+.rotate-img {
+  animation: loaderRotateSection 3s linear infinite;
+}
 //scrollbar
 /* width */
 ::-webkit-scrollbar {
