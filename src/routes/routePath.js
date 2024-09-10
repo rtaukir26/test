@@ -3,6 +3,7 @@ const routePath = {
   home: "/home",
   auth: "/authentication/:id",
   unAuthorized: "/unauthorized",
+  budgetSheet: "/budget-sheet",
   budgetView: "/budget-view",
   allBudgetList: "/budget-list-view",
   login: "/login",

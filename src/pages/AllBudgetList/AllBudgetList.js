@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import routePath from "../../../routes/routePath";
-import {
-  getBudgetList,
-  getReportList,
-  getReportListExport,
-} from "../../../services/budgetViewServices";
-import downloadIcon from "../../../assets/images/file.png";
-import noDataFoundIcon from "../../../assets/images/no-data-found.png";
+
+import downloadIcon from "../../assets/images/file.png";
+import noDataFoundIcon from "../../assets/images/no-data-found.png";
 
 import * as XLSX from "xlsx";
 import moment from "moment";
-import LoaderCommon from "../../LoaderCommon/LoaderCommon";
 import { toast } from "react-toastify";
+import {
+  getReportList,
+  getReportListExport,
+} from "../../services/budgetViewServices";
+import LoaderCommon from "../../components/LoaderCommon/LoaderCommon";
 
 const AllBudgetList = () => {
   const [budgetListApi, setBudgetList] = useState([]);
@@ -35,31 +33,9 @@ const AllBudgetList = () => {
       .catch((err) => {
         setIsLoader(false);
       });
-    // getReportListExport()
-    //   .then((res) => {
-    //     if (res.status === 200 && res.data)
-    //       setReportListExportData(res.data.tickets);
-    //   })
-    //   .catch((err) => err);
   }, []);
 
   //download data as exel
-  // const exportBudgetSheet = (e) => {
-  //   let Heading = [["Region", "Business Function"]];
-  //   const workbook = XLSX.utils.book_new();
-  //   const worksheet = XLSX.utils.json_to_sheet(reportListExportData);
-  //   XLSX.utils.sheet_add_aoa(worksheet, Heading);
-  //   // XLSX.utils.sheet_add_aoa(worksheet);
-  //   // XLSX.utils.sheet_add_json(worksheet, arr, { origin: 'A2', skipHeader: true });
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-  //   XLSX.writeFile(
-  //     workbook,
-  //     "BB-Budget-Report-" +
-  //       moment(new Date()).format("YYYY-MM-DD-HH-mm-ss") +
-  //       ".xlsx"
-  //   );
-  // };
-
   const exportBudgetSheet = (e) => {
     setIsLoader(true);
     getReportListExport()
@@ -146,68 +122,6 @@ const AllBudgetList = () => {
                 </thead>
                 <tbody>
                   {budgetListApi?.map((item, i) => (
-                    // <tr>
-                    //   <td title={item.region}>
-                    //     {item.region ? item.region : "--"}
-                    //   </td>
-                    //   <td title={item.business_function} className="truncate">
-                    //     {item.business_function ? item.business_function : "--"}
-                    //   </td>
-                    //   <td title={item.practice_name}>
-                    //     {item.practice_name ? item.practice_name : "--"}
-                    //   </td>
-                    //   <td title={item.cost_center_owner}>
-                    //     {item.cost_center_owner ? item.cost_center_owner : "--"}
-                    //   </td>
-                    //   <td title={item.project_name}>
-                    //     {item.project_name ? item.project_name : "--"}
-                    //   </td>
-                    //   {/* <td title={item.customer_type} className="truncate">
-                    //     {item.customer_type}
-                    //   </td> */}
-                    //   {/* <td title={item.customer} className="truncate">
-                    //     {item.customer}
-                    //   </td> */}
-                    //   <td title={item.budget_type}>
-                    //     {item.budget_type ? item.budget_type : "--"}
-                    //   </td>
-                    //   <td title={item.cost_center}>
-                    //     {item.cost_center ? item.cost_center : "--"}
-                    //   </td>
-                    //   <td title={item.item_description}>
-                    //     {item.item_description ? item.item_description : "--"}
-                    //   </td>
-                    //   <td title={item.currency}>
-                    //     {item.currency ? item.currency : "--"}
-                    //   </td>
-                    //   <td
-                    //     title={item.month_1}
-                    //     style={{ textAlign: "right", paddingRight: "10px" }}
-                    //   >
-                    //     {item.month_1 ? item.month_1 : "--"}
-                    //   </td>
-                    //   <td
-                    //     title={item.month_2}
-                    //     style={{ textAlign: "right", paddingRight: "10px" }}
-                    //   >
-                    //     {item.month_2 ? item.month_2 : "--"}
-                    //   </td>
-                    //   <td
-                    //     title={item.month_3}
-                    //     style={{ textAlign: "right", paddingRight: "10px" }}
-                    //   >
-                    //     {item.month_3 ? item.month_3 : "--"}
-                    //   </td>
-                    //   <td
-                    //     title={item.budget_total}
-                    //     style={{ textAlign: "right", paddingRight: "10px" }}
-                    //   >
-                    //     {item.budget_total ? item.budget_total : "--"}
-                    //   </td>
-                    //   <td title={item.remarks}>
-                    //     {item.remarks ? item.remarks : "--"}
-                    //   </td>
-                    // </tr>
                     <tr>
                       <td title={item.region}>
                         {item.region ? item.region : "--"}
@@ -241,25 +155,25 @@ const AllBudgetList = () => {
                         title={item.month_1}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.month_1 ? item.month_1 : 0.00}
+                        {item.month_1 ? item.month_1 : 0.0}
                       </td>
                       <td
                         title={item.month_2}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.month_2 ? item.month_2 : 0.00}
+                        {item.month_2 ? item.month_2 : 0.0}
                       </td>
                       <td
                         title={item.month_3}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.month_3 ? item.month_3 : 0.00}
+                        {item.month_3 ? item.month_3 : 0.0}
                       </td>
                       <td
                         title={item.budget_total}
                         style={{ textAlign: "right", paddingRight: "10px" }}
                       >
-                        {item.budget_total ? item.budget_total : 0.00}
+                        {item.budget_total ? item.budget_total : 0.0}
                       </td>
                       <td className="truncate" title={item.remarks}>
                         {item.remarks ? item.remarks : "--"}

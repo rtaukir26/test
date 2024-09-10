@@ -16,15 +16,7 @@
 }
 @import "../scss/dark-theme-files.scss";
 @import "../scss/light-theme-files.scss";
-// @function rem($pixels, $context: $baseFontSize) {
-//   @if (unitless($pixels)) {
-//     $pixels: $pixels * 1px;
-//   }
-//   @if (unitless($context)) {
-//     $context: $context * 1px;
-//   }
-//   @return $pixels / $context * 1rem;
-// }
+
 @font-face {
   font-family: "Facto";
   src: url(../assets/Fonts/Facto.otf) format("opentype");
@@ -123,14 +115,10 @@ span {
 .truncate {
   // display: inline-block;
   // width: 100px;
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
   color: #fff;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  // width: 100px;
 }
 .no-data-found {
   display: flex;
@@ -153,7 +141,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 .loading-common {
@@ -183,13 +171,6 @@ input[type=number] {
     transform: rotate(360deg);
   }
 }
-
-
-
-
-
-
-
 
 //scrollbar
 /* width */

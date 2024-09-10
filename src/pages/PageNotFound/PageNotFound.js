@@ -1,9 +1,8 @@
 // import { getUserIdToken } from "Storage/UserTokenStorage";
 import { Link } from "react-router-dom";
-// import NotFound from "../../assets/images/no-widget-added.png";
-import NotFound from "../../../assets/images/no-widget-added.jpg";
+import NotFound from "../../assets/images/no-widget-added.jpg";
 import React from "react";
-import routePath from "../../../routes/routePath";
+import routePath from "../../routes/routePath";
 
 function PageNotFound() {
   //    const userIdToken = getUserIdToken();

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UnAuthorized from "../../../assets/images/un_authroized.png";
+import UnAuthorized from "../../assets/images/un_authroized.png";
 
 let interval;
 function UnAuthroized() {

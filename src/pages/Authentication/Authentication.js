@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 
-import { Loader } from "../../../utils/Images";
+import { Loader } from "../../utils/Images";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import routePath from "../../../routes/routePath";
-import { USER_ID_TOKEN_BUDGET } from "../../../constant/auth";
+import routePath from "../../routes/routePath";
+import { USER_ID_TOKEN_BUDGET } from "../../constant/auth";
 
 function Authentication() {
   const params = useParams();
