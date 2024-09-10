@@ -45,7 +45,7 @@ const AppRoutes = () => {
           }
         >
           <Route path={routePath.root} element={<BudgetSheet />} />
-          <Route path={routePath.home} element={<BudgetSheet />} />
+          <Route path={routePath.budgetSheet} element={<BudgetSheet />} />
           <Route path={routePath.budgetView} element={<BudgetView />} />
           <Route path={routePath.allBudgetList} element={<AllBudgetList />} />
         </Route>

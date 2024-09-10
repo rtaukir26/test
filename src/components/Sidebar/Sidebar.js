@@ -44,7 +44,7 @@ const Sidebar = () => {
         </div>
 
         <NavLink
-          to={routePath.home}
+          to={routePath.budgetSheet}
           // activeClassName="active"
           // className={({ isActive }) => (isActive ? "active" : "inactive")}
         >

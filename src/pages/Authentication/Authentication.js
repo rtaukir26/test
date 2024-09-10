@@ -28,7 +28,7 @@ function Authentication() {
             "USER_ACCESS",
             response?.data?.currentUserAccess
           );
-          navigate(routePath?.home);
+          navigate(routePath?.budgetSheet);
         } else {
           navigate(routePath?.unAuthorized);
         }

@@ -37,3 +37,32 @@ export const formValidation = (data) => {
   console.log("form validation err", data);
   return response;
 };
+
+export const handleFocusFormData = (formErr, formValues) => {
+  let errorMsg = { ...formErr };
+  if (formValues.region !== "" && formValues.region !== undefined) {
+    delete errorMsg.region;
+  }
+  if (
+    formValues.business_function !== "" &&
+    formValues.business_function !== undefined
+  ) {
+    delete errorMsg.business_function;
+  }
+  if (
+    formValues.practice_name !== "" &&
+    formValues.practice_name !== undefined
+  ) {
+    delete errorMsg.practice_name;
+  }
+  if (
+    formValues.cost_center_owner !== "" &&
+    formValues.cost_center_owner !== undefined
+  ) {
+    delete errorMsg.cost_center_owner;
+  }
+  if (formValues.currency !== "" && formValues.currency !== undefined) {
+    delete errorMsg.currency;
+  }
+  return errorMsg;
+};

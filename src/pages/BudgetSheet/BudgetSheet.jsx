@@ -11,7 +11,7 @@ import {
   getMonthValue,
   monthMap,
 } from "../../utils/helpers";
-import { formValidation } from "../../utils/validation";
+import { formValidation, handleFocusFormData } from "../../utils/validation";
 import {
   getCustomerData,
   getDepartmentData,
@@ -28,6 +28,9 @@ const BudgetSheet = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [isChildError, setIsChildError] = useState(false);
   const [formErr, setFormErr] = useState();
+
+  const months = ["Oct-24", "Nov-24", "Dec-24"];
+
   const currencySymbols = {
     INR: "&#8377;",
     EUR: "&euro;",
@@ -183,9 +186,6 @@ const BudgetSheet = () => {
     }));
   };
 
-  const months = ["Oct-24", "Nov-24", "Dec-24"];
-  // const [nextId, setNextId] = useState(1);
-
   //Add more rows
   const handleAddMore = () => {
     let template = {
@@ -212,6 +212,7 @@ const BudgetSheet = () => {
     e.preventDefault();
     setIsChildError(true);
     const validated = formValidation(formValues);
+
     let isChildDataFilled = budgetDataApi.every((item) => {
       let isValid = true;
       if (item.budget_total === 0) {
@@ -228,7 +229,7 @@ const BudgetSheet = () => {
       }
       return isValid;
     });
-    console.log("isChildDataFilled", isChildDataFilled);
+
     if (Object.keys(validated)?.length > 0 || !isChildDataFilled) {
       setFormErr(validated);
       //   // toast.dismiss();
@@ -246,20 +247,17 @@ const BudgetSheet = () => {
       delete item.entries;
       return item;
     });
-    // let postData = { ...formValues, child: budgetDataApi };
     let postData = { ...formValues, child: updateTotal };
-
     saveBudgetData(postData)
       .then((res) => {
         if (res.status === 200) {
-          console.log("res", res);
           toast.success("Form has been submitted successfully");
 
           setTimeout(() => {
             navigate(routePath.budgetView);
           }, 1500);
         } else {
-          toast.error("something went wrong");
+          toast.error("Something went wrong");
         }
         console.log("res", res);
       })
@@ -343,47 +341,8 @@ const BudgetSheet = () => {
 
   //Validation field for parents data - handle focus
   useEffect(() => {
-    let errorMsg = { ...formErr };
-    if (formValues.region !== "" && formValues.region !== undefined) {
-      delete errorMsg.region;
-    }
-    if (
-      formValues.business_function !== "" &&
-      formValues.business_function !== undefined
-    ) {
-      delete errorMsg.business_function;
-    }
-    if (
-      formValues.practice_name !== "" &&
-      formValues.practice_name !== undefined
-    ) {
-      delete errorMsg.practice_name;
-    }
-    if (
-      formValues.cost_center_owner !== "" &&
-      formValues.cost_center_owner !== undefined
-    ) {
-      delete errorMsg.cost_center_owner;
-    }
-    // if (
-    //   formValues.project_name !== "" &&
-    //   formValues.project_name !== undefined
-    // ) {
-    //   delete errorMsg.project_name;
-    // }
-    // if (
-    //   formValues.customer_type !== "" &&
-    //   formValues.customer_type !== undefined
-    // ) {
-    //   delete errorMsg.customer_type;
-    // }
-    // if (formValues.customer !== "" && formValues.customer !== undefined) {
-    //   delete errorMsg.customer;
-    // }
-    if (formValues.currency !== "" && formValues.currency !== undefined) {
-      delete errorMsg.currency;
-    }
-    setFormErr(errorMsg);
+    let errorFields = handleFocusFormData(formErr, formValues);
+    setFormErr(errorFields);
   }, [formValues]);
 
   return (
@@ -545,6 +504,7 @@ const BudgetSheet = () => {
                     <>
                       <div className="custom-table-con">
                         <table className="custom-table">
+                          
                           <thead>
                             <tr className="">
                               <th className="header-th" colSpan="12">
