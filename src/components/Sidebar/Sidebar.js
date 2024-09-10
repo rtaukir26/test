@@ -79,7 +79,7 @@ const Sidebar = () => {
             <span>Customer Projects</span>
           </div>
         </NavLink> */}
-        <NavLink to={routePath.home}>
+        <NavLink to={routePath.home} >
           <div className="project-con">
             <img src={budgetPlan} alt="project" />
             <span>Plan The Budget</span>

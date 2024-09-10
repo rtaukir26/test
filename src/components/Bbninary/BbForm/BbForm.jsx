@@ -1,4 +1,3 @@
-import { Toast } from "bootstrap";
 import React, { useEffect, useState } from "react";
 import SelectSearch from "react-select-search";
 import "react-select-search/style.css";
@@ -23,16 +22,12 @@ import ConfirmPopup from "../SubmitPopup/SubmitPopup/ConfirmPopup";
 import { useNavigate } from "react-router-dom";
 import routePath from "../../../routes/routePath";
 import { decode } from "html-entities";
-import LoaderCommon from "../../LoaderCommon/LoaderCommon";
 
 const BbForm = () => {
   const navigate = useNavigate();
-  const [isLoader, setIsLoader] = useState(true);
-  const [isAddingNew, setIsAddingNew] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isChildError, setIsChildError] = useState(false);
   const [formErr, setFormErr] = useState();
-  const [budgetTotal, setBudgetTotal] = useState(0);
   const currencySymbols = {
     INR: "&#8377;",
     EUR: "&euro;",
@@ -111,7 +106,6 @@ const BbForm = () => {
   useEffect(() => {
     getDepartmentData()
       .then((res) => {
-        setIsLoader(true);
         if (res.status === 200 && res.data) {
           let deptDetails = res.data?.department?.map(function (obj, i) {
             obj["label"] = obj["unitname"];
@@ -120,15 +114,12 @@ const BbForm = () => {
             return obj;
           });
           setBusinessFunction(deptDetails);
-          setIsLoader(false);
-          // setBusinessFunction(res.data.department);
         }
       })
       .catch((err) => err);
     getCustomerData()
       .then((res) => {
         if (res.status === 200 && res.data) {
-          // setCustomerApiData(res.data.customer);
           let cusDetails = res.data?.customer?.map(function (obj, i) {
             obj["label"] = obj["client_name"];
             obj["name"] = obj["client_name"];
@@ -202,7 +193,6 @@ const BbForm = () => {
       budget_total: 0,
       item_description: "",
       cost_center: "",
-      // currency: "",
       entries: [
         { budgetMonth: "10", year: "24", estimatedBudget: "" },
         { budgetMonth: "11", year: "24", estimatedBudget: "" },
@@ -252,13 +242,10 @@ const BbForm = () => {
 
   //popup OK button
   const handleConfirmSubmit = () => {
-    setIsLoader(true);
     let updateTotal = budgetDataApi.map((item) => {
       delete item.entries;
-      // return { ...item, budget_total: parseFloat(budgetTotal) };
       return item;
     });
-    console.log("updateTotal", updateTotal);
     // let postData = { ...formValues, child: budgetDataApi };
     let postData = { ...formValues, child: updateTotal };
 
@@ -270,17 +257,14 @@ const BbForm = () => {
 
           setTimeout(() => {
             navigate(routePath.budgetView);
-            setIsLoader(false);
           }, 1500);
         } else {
           toast.error("something went wrong");
-          setIsLoader(false);
         }
         console.log("res", res);
       })
       .catch((err) => {
         toast.error("Network Error");
-        setIsLoader(false);
       });
     console.log("postData", postData);
     setIsSubmit(false);
@@ -301,16 +285,6 @@ const BbForm = () => {
     // Convert the input value to a number
     let newValue = parseFloat(e.target.value) || 0;
     // -----------------
-    // const onlyNums = e.target.value.replace(/[^0-9.]/g, "");
-    // Format the value as currency
-    // const formattedValue = new Intl.NumberFormat("en-IN", {
-    //   style: "currency",
-    //   currency: "INR",
-    //   maximumFractionDigits: 2,
-    // }).format(onlyNums);
-
-    // console.log("formattedValue", formattedValue);
-
     if (idx === 0) {
       newArray[rowIndex].month_1 = newValue;
     }
@@ -367,10 +341,9 @@ const BbForm = () => {
 
   let totals = calculateTotals(budgetDataApi, months, monthMap, "R");
 
-  //Validation field - handle focus
+  //Validation field for parents data - handle focus
   useEffect(() => {
     let errorMsg = { ...formErr };
-
     if (formValues.region !== "" && formValues.region !== undefined) {
       delete errorMsg.region;
     }
@@ -428,10 +401,10 @@ const BbForm = () => {
           <div className="form-div">
             {/* Region --1 */}
             <div
+              // className="field-con form-col-sec select-search-container-section"
               className={`field-con form-col-sec select-search-container-section ${
                 formErr?.region && "field-error"
               }`}
-              // className="field-con form-col-sec select-search-container-section"
             >
               <label className="required">
                 Region<small className="mandatory-small">*</small>
@@ -454,7 +427,6 @@ const BbForm = () => {
 
             {/* Business Function --2 */}
             <div
-              // className="field-con form-col-sec select-search-container-section"
               className={`field-con form-col-sec select-search-container-section ${
                 formErr?.business_function && "field-error"
               }`}
@@ -485,7 +457,6 @@ const BbForm = () => {
 
             {/* Practice Name  --3 */}
             <div
-              // className="field-con form-col-sec select-search-container-section"
               className={`field-con form-col-sec select-search-container-section ${
                 formErr?.practice_name && "field-error"
               }`}
@@ -541,98 +512,7 @@ const BbForm = () => {
               />
             </div>
 
-            {/* Customer Type --6 */}
-            {/* <div
-              className="field-con form-col-sec select-search-container-section"
-              // className={`field-con form-col-sec select-search-container-section ${
-              //   formErr?.customer_type && "field-error"
-              // }`}
-            >
-              <label className="required">Customer Type </label>
-              <SelectSearch
-                options={CustomerType}
-                value={formValues.customer_type}
-                onChange={(value) => {
-                  setFormValues((prevValues) => ({
-                    ...prevValues,
-                    customer_type: value,
-                  }));
-                }}
-                name="projectType"
-                placeholder="Select Customer Type"
-                search={true}
-              />
-              <img src={DropdownIcon} alt="dropdown" />
-            </div> */}
-
-            {/* Customer --7 */}
-            {/* {isAddingNew ? (
-              <div className="field-con">
-                <label htmlFor="project_name">Customer</label>
-                <span
-                  className="add-new-customer"
-                  onClick={(e) => {
-                    setFormValues((prevValues) => ({
-                      ...prevValues,
-                      customer: "",
-                    }));
-                    setIsAddingNew(!isAddingNew);
-                  }}
-                >
-                  Select Customer
-                </span>
-                <input
-                  // className={formErr?.customer && "field-error"}
-                  type="text"
-                  name="project_name"
-                  placeholder="Enter customer name"
-                  value={formValues.customer}
-                  onChange={(e) => {
-                    setFormValues((prevValues) => ({
-                      ...prevValues,
-                      customer: e.target.value,
-                    }));
-                  }}
-                />
-              </div>
-            ) : (
-              <div
-                className="field-con form-col-sec select-search-container-section"
-                // className={`field-con form-col-sec select-search-container-section ${
-                //   formErr?.customer && "field-error"
-                // }`}
-              >
-                <label className="required">Customer </label>
-                <span
-                  className="add-new-customer"
-                  onClick={() => {
-                    setFormValues((prevValues) => ({
-                      ...prevValues,
-                      customer: "",
-                    }));
-                    setIsAddingNew(!isAddingNew);
-                  }}
-                >
-                  Add New Customer
-                </span>
-                <SelectSearch
-                  options={customerNameApi}
-                  value={formValues.customer}
-                  onChange={(value) => {
-                    setFormValues((prevValues) => ({
-                      ...prevValues,
-                      customer: value,
-                    }));
-                  }}
-                  name="projectType"
-                  placeholder="Select Customer"
-                  search={true}
-                />
-                <img src={DropdownIcon} alt="dropdown" />
-              </div>
-            )} */}
-
-            {/* Currency */}
+            {/* Currency --6 */}
             <div
               className={`field-con form-col-sec select-search-container-section ${
                 formErr?.currency && "field-error"
@@ -653,7 +533,6 @@ const BbForm = () => {
                 name="projectType"
                 placeholder="Select Currency"
                 search={true}
-                // disabled={projectId && !access?.super_access}
               />
               <img src={DropdownIcon} alt="dropdown" />
             </div>
@@ -670,10 +549,6 @@ const BbForm = () => {
                             <div>
                               TOTAL Q3 BUDGET:
                               <span>
-                                {/* {decode(currencyIcon(), { level: 'html5' })}
-                                {totals
-                                  .reduce((acc, curr) => acc + curr.value, 0)
-                                  .toFixed(2)} */}
                                 {`${decode(currencyIcon(), {
                                   level: "html5",
                                 })} ${totals
@@ -696,7 +571,6 @@ const BbForm = () => {
                             Cost Center
                             <small className="mandatory-small">*</small>
                           </th>
-                          {/* <th>Currency</th> */}
                           {/* Months - header th */}
                           {months.map((month) => (
                             <th>{month}</th>
@@ -792,8 +666,6 @@ const BbForm = () => {
                                 />
                               </div>
                             </td>
-                            {/* Currency */}
-
                             {/* Months */}
                             {months.map((monthValue, idx) => (
                               <td key={idx}>
@@ -841,6 +713,7 @@ const BbForm = () => {
                                 <input
                                   type="text"
                                   name="remarks"
+                                  autoComplete="off"
                                   value={row.remarks}
                                   onChange={(e) => {
                                     const newRows = [...budgetDataApi];
@@ -889,7 +762,7 @@ const BbForm = () => {
                           {totals.map((total, index) => (
                             <td style={{ textAlign: "end" }} key={index}>
                               {total.value.toFixed(2)}
-                            </td> // Format to two decimal places
+                            </td>
                           ))}
                           <td style={{ textAlign: "end" }}>
                             {totals

@@ -25,6 +25,8 @@ const BudgetView = () => {
         setIsLoader(true);
         if (res.statusCode === 200 || (res.status === 200 && res.data)) {
           setIsLoader(false);
+         
+
           setBudgetList(res.data.viewData);
         } else {
           setIsLoader(false);
@@ -34,12 +36,6 @@ const BudgetView = () => {
         toast.error("Network Error");
         setIsLoader(false);
       });
-    // getBudgetListExport()
-    //   .then((res) => {
-    //     if (res.status === 200 && res.data)
-    //       setBudgetListExportData(res.data.tickets);
-    //   })
-    //   .catch((err) => err);
   }, []);
 
   //download data as exel
