@@ -161,6 +161,16 @@ const BudgetSheet = () => {
               },
             ];
           }
+          if (fdata[0]?.id === 11 || fdata[0]?.id === 12) {
+            practiceDetails = [
+              ...practiceDetails,
+              {
+                name: "Future Business",
+                value: "Future Business",
+                label: "Future Business",
+              },
+            ];
+          }
           setPracticeApiData(practiceDetails);
         }
       })
